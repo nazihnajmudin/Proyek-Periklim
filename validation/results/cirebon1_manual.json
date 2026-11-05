@@ -1,0 +1,35 @@
+[
+ {
+  "year": 2030,
+  "pv_mwp": 5937.3580917833115,
+  "revenue_lost_rp": -4803697876032.11,
+  "export_cost_rp": -2871773655171.331,
+  "energy_saved_rp": 3031372662719.392,
+  "capacity_saved_rp": 0,
+  "comp_pln_rp": 0,
+  "replacement_rp": 0,
+  "pln_rp": -4644098868484.049
+ },
+ {
+  "year": 2035,
+  "pv_mwp": 12524.854472902327,
+  "revenue_lost_rp": -10544839921050.75,
+  "export_cost_rp": -6438954389451.602,
+  "energy_saved_rp": 6754536670923.092,
+  "capacity_saved_rp": 1905750000000.0,
+  "comp_pln_rp": -172425000000.0,
+  "replacement_rp": -1306800000000.0,
+  "pln_rp": -9802732639579.26
+ },
+ {
+  "year": 2040,
+  "pv_mwp": 19112.350854021348,
+  "revenue_lost_rp": -16285981966069.393,
+  "export_cost_rp": -10006135123731.873,
+  "energy_saved_rp": 10546426190670.363,
+  "capacity_saved_rp": 1905750000000.0,
+  "comp_pln_rp": -172425000000.0,
+  "replacement_rp": -1306800000000.0,
+  "pln_rp": -15319165899130.902
+ }
+]

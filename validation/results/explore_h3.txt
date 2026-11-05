@@ -1,0 +1,23 @@
+PLN >= 0, PLTS atap terbesar:
+  ipp_old 2030 e=0 gov=100 prog=0 ext=1 PLN=0.4 negara=2.6 PV=5530 CO2=23 jiwa=788 kes=9.2
+  none 2030 e=0 gov=0 prog=0 ext=0.75 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+  none 2030 e=0 gov=0 prog=0 ext=1 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+  none 2035 e=0 gov=0 prog=0 ext=0.75 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+  none 2035 e=0 gov=0 prog=0 ext=1 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+Negara >= 0, PLTS atap terbesar:
+  ipp_old 2030 e=0 gov=100 prog=0 ext=1 PLN=0.4 negara=2.6 PV=5530 CO2=23 jiwa=788 kes=9.2
+  none 2030 e=0 gov=0 prog=0 ext=0.75 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+  none 2030 e=0 gov=0 prog=0 ext=1 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+  none 2035 e=0 gov=0 prog=0 ext=0.75 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+  none 2035 e=0 gov=0 prog=0 ext=1 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+Negara + kesehatan >= 0, PLTS atap terbesar:
+  cirebon1 2030 e=0.65 gov=300 prog=0.1 ext=0.75 PLN=-155.1 negara=-169.6 PV=22579 CO2=202 jiwa=17720 kes=206.1
+  cirebon1 2030 e=0.65 gov=300 prog=0.1 ext=1 PLN=-153.2 negara=-167.7 PV=22579 CO2=202 jiwa=17720 kes=206.1
+  cirebon1_ratu 2030 e=0.65 gov=300 prog=0.1 ext=0.75 PLN=-169.5 negara=-184.1 PV=22579 CO2=207 jiwa=17720 kes=206.1
+  cirebon1_ratu 2030 e=0.65 gov=300 prog=0.1 ext=1 PLN=-166.1 negara=-180.6 PV=22579 CO2=207 jiwa=17720 kes=206.1
+  cirebon1 2030 e=0.65 gov=100 prog=0.1 ext=0.75 PLN=-138.6 negara=-167.9 PV=22074 CO2=192 jiwa=17249 kes=200.6
+Efek pensiun per set (e=0, gov=0, prog=0, ext=0.75, 2030):
+  none 2030 e=0 gov=0 prog=0 ext=0.75 PLN=0.0 negara=0.0 PV=4030 CO2=0 jiwa=0 kes=0.0
+  cirebon1 2030 e=0 gov=0 prog=0 ext=0.75 PLN=3.9 negara=3.9 PV=4030 CO2=-2 jiwa=8133 kes=94.6
+  cirebon1_ratu 2030 e=0 gov=0 prog=0 ext=0.75 PLN=-10.5 negara=-10.5 PV=4030 CO2=4 jiwa=8132 kes=94.6
+  ipp_old 2030 e=0 gov=0 prog=0 ext=0.75 PLN=10.6 negara=10.6 PV=4030 CO2=6 jiwa=1 kes=0.0
