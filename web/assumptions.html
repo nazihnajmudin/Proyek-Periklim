@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asumsi PowerShift</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="logo">PowerShift</span><span class="tagline">Asumsi dan parameter model</span></div>
+    <nav>
+      <a href="index.html">Simulator</a>
+      <a href="guide.html">Panduan</a>
+      <a href="assumptions.html" class="active">Asumsi</a>
+      <a href="method.html">Metode</a>
+      <a href="sources.html">Sumber</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <h1>Asumsi dan Parameter</h1>
+    <p>Setiap angka punya sumber atau ditandai asumsi. Kode sumber mengacu ke halaman <a href="sources.html">Sumber</a>.
+       Status <span class="tag verified">terverifikasi</span> berarti angka dicocokkan ke dokumen asli,
+       <span class="tag assumption">asumsi</span> berarti pilihan tim, dan <span class="tag">perlu cek</span> berarti belum dicocokkan.</p>
+    <div id="tables"></div>
+
+    <h2>Daftar PLTU</h2>
+    <p>Unit PLTU operasi, terhubung jaringan PLN di Jawa-Bali (Global Energy Monitor, Juli 2026). PLTU captive industri tidak dimasukkan.</p>
+    <div id="plants"></div>
+  </main>
+
+  <script src="js/format.js"></script>
+  <script>
+    const GROUPS = {
+      system: "Sistem listrik Jawa-Bali",
+      coal: "PLTU dan pensiun dini",
+      health: "Kesehatan",
+      pv: "PLTS atap",
+      subsidy: "Subsidi",
+      population_m: "Penduduk (alokasi provinsi)",
+    };
+    const STATUS = { verified: "terverifikasi", assumption: "asumsi", "perlu-cek": "perlu cek" };
+
+    function showValue(p) {
+      if (typeof p.value !== "object") {
+        let text = fmtNum(p.value, p.value < 10 ? 4 : 0);
+        if (text.includes(",")) text = text.replace(/0+$/, "").replace(/,$/, "");
+        return text;
+      }
+      const v = p.value;
+      return "porsi tren " + fmtPct(v.split, 0) + ", harga Rp" + fmtNum(v.price / 1e6, 0) + " juta/kWp, pakai sendiri " +
+             fmtPct(v.self, 0) + ", tarif Rp" + fmtNum(v.tariff, 2) + "/kWh";
+    }
+
+    function row(p) {
+      return "<tr><td>" + p.label + "</td><td>" + showValue(p) + "</td><td>" + p.unit + "</td><td><code>" + p.source +
+             '</code></td><td><span class="tag ' + p.status + '">' + STATUS[p.status] + "</span></td><td>" + (p.note || "") + "</td></tr>";
+    }
+
+    async function render() {
+      const params = await (await fetch("data/parameters.json")).json();
+      let html = "";
+      for (const [group, title] of Object.entries(GROUPS)) {
+        html += "<h2>" + title + "</h2><table><tr><th>Parameter</th><th>Nilai</th><th>Satuan</th><th>Sumber</th><th>Status</th><th>Catatan</th></tr>";
+        for (const [key, p] of Object.entries(params[group])) {
+          if (key === "segments") {
+            for (const s of Object.values(p)) html += row(s);
+          } else {
+            html += row(p);
+          }
+        }
+        html += "</table>";
+      }
+      document.getElementById("tables").innerHTML = html;
+
+      const plants = await (await fetch("data/plants.json")).json();
+      let t = "<table><tr><th>PLTU</th><th>Unit</th><th>MW</th><th>Mulai</th><th>Tipe</th><th>Pensiun baseline</th><th>Sumber tahun pensiun</th><th>tCO2/MWh</th><th>Kematian/tahun</th></tr>";
+      for (const u of plants) {
+        t += "<tr><td>" + u.plant + "</td><td>" + u.unit + "</td><td>" + fmtNum(u.mw, 0) + "</td><td>" + u.start +
+             "</td><td>" + u.type + "</td><td>" + u.retire_base + "</td><td><code>" + u.retire_src + "</code></td><td>" +
+             fmtNum(u.ef_t_mwh, 2) + "</td><td>" + fmtNum(u.deaths_yr, 0) + "</td></tr>";
+      }
+      document.getElementById("plants").innerHTML = t + "</table>";
+    }
+    render();
+  </script>
+</body>
+</html>

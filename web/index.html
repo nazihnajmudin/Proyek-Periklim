@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PowerShift</title>
+  <meta name="description" content="Simulator paket pensiun dini PLTU dan PLTS atap untuk sistem listrik Jawa-Bali">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo">PowerShift</span>
+      <span class="tagline">Paket pensiun dini PLTU + PLTS atap, sistem Jawa-Bali</span>
+    </div>
+    <nav>
+      <a href="index.html" class="active">Simulator</a>
+      <a href="guide.html">Panduan</a>
+      <a href="assumptions.html">Asumsi</a>
+      <a href="method.html">Metode</a>
+      <a href="sources.html">Sumber</a>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <aside class="panel" id="panel">
+      <section>
+        <h2>Preset</h2>
+        <select id="preset"></select>
+        <p class="hint" id="preset-note"></p>
+      </section>
+
+      <section>
+        <h2>Pensiun dini PLTU</h2>
+        <div id="retire-list"></div>
+        <select id="add-plant"><option value="">+ Tambah PLTU</option></select>
+        <div class="radio-row">
+          <span>Kompensasi:</span>
+          <label><input type="radio" name="comp" value="etm" checked> Estimasi ETM</label>
+          <label><input type="radio" name="comp" value="pln"> Klaim PLN</label>
+        </div>
+        <label class="slider">Dana luar (ETM/JETP) <b id="v-ext"></b>
+          <input type="range" id="fund-ext" min="0" max="100" step="5"></label>
+        <label class="slider">APBN <b id="v-apbn"></b>
+          <input type="range" id="fund-apbn" min="0" max="100" step="5"></label>
+        <p class="hint">Sisa ditanggung PLN: <b id="v-pln"></b></p>
+      </section>
+
+      <section>
+        <h2>PLTS atap</h2>
+        <label class="slider">Nilai ekspor ke PLN <b id="v-export"></b>
+          <input type="range" id="export" min="0" max="100" step="5"></label>
+        <p class="hint">0% = aturan sekarang (Permen ESDM 2/2024)</p>
+        <label class="slider">Kuota Jawa-Bali (MW/tahun) <b id="v-quota"></b>
+          <input type="range" id="quota" min="200" max="3000" step="50"></label>
+        <label class="slider">Gedung pemerintah (MW/tahun) <b id="v-gov"></b>
+          <input type="range" id="gov" min="0" max="500" step="10"></label>
+        <label class="slider">Subsidi 450/900 VA dialihkan <b id="v-program"></b>
+          <input type="range" id="program" min="0" max="30" step="1"></label>
+      </section>
+
+      <div class="buttons">
+        <button id="reset">Reset ke baseline</button>
+        <button id="share" class="primary">Bagikan</button>
+      </div>
+      <p class="hint" id="share-msg"></p>
+    </aside>
+
+    <section class="content">
+      <div class="kpis" id="kpis"></div>
+
+      <div class="map-wrap">
+        <div id="map"></div>
+        <div class="map-controls">
+          <button id="play" title="Putar">&#9654;</button>
+          <input type="range" id="year" min="2026" max="2040" step="1" value="2026">
+          <span id="year-label">2026</span>
+        </div>
+        <div class="map-layers">
+          <label><input type="checkbox" id="layer-pvout"> Potensi surya</label>
+          <label><input type="checkbox" id="layer-health"> Dampak kesehatan</label>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button data-tab="neraca" class="active">Neraca</button>
+        <button data-tab="keandalan">Keandalan</button>
+        <button data-tab="dampak">Dampak</button>
+        <button data-tab="kriteria">Kriteria Permen 10/2025</button>
+      </div>
+
+      <div class="tab-body" id="tab-neraca">
+        <div class="tab-head">
+          <p class="explain">Selisih terhadap baseline phase down di akhir PPA. Positif berarti lebih untung dari baseline.</p>
+          <div class="toggle" id="ledger-toggle">
+            <button data-ledger="pln" class="active">PLN</button>
+            <button data-ledger="apbn">APBN</button>
+            <button data-ledger="state">Negara (PLN + APBN)</button>
+          </div>
+        </div>
+        <div class="chart-box"><canvas id="chart-ledger"></canvas></div>
+        <div class="chart-actions"><button data-png="chart-ledger">Unduh PNG</button><button id="csv">Unduh CSV</button></div>
+      </div>
+
+      <div class="tab-body hidden" id="tab-keandalan">
+        <p class="explain">Reserve margin Jawa-Bali. PLTS atap tidak dihitung menambah daya mampu karena beban puncak terjadi malam hari.</p>
+        <div class="chart-box"><canvas id="chart-rm"></canvas></div>
+        <div class="chart-box"><canvas id="chart-energy"></canvas></div>
+        <div class="chart-actions"><button data-png="chart-rm">Unduh PNG cadangan</button><button data-png="chart-energy">Unduh PNG energi</button></div>
+      </div>
+
+      <div class="tab-body hidden" id="tab-dampak">
+        <p class="explain">Emisi dan kematian dini yang dihindari dibanding baseline, serta pekerja PLTU terdampak dan lapangan kerja PLTS atap.</p>
+        <div class="chart-box"><canvas id="chart-impact"></canvas></div>
+        <div class="chart-box"><canvas id="chart-deaths"></canvas></div>
+        <div class="chart-box"><canvas id="chart-jobs"></canvas></div>
+        <div class="chart-actions"><button data-png="chart-impact">Unduh PNG CO2</button><button data-png="chart-deaths">Unduh PNG kesehatan</button><button data-png="chart-jobs">Unduh PNG pekerja</button></div>
+      </div>
+
+      <div class="tab-body hidden" id="tab-kriteria">
+        <p class="explain">Penilaian indikatif atas kriteria Pasal 11 Permen ESDM 10/2025. Ambang adalah asumsi tim, bukan tafsir hukum.</p>
+        <div id="criteria"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Alat indikatif untuk diskusi kebijakan, bukan dokumen resmi PLN atau ESDM. Kontrak IPP memakai asumsi.
+       <a href="sources.html">Sumber data dan lisensi</a>.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/format.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

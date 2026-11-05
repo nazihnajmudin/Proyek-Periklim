@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Metode PowerShift</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="logo">PowerShift</span><span class="tagline">Metode dan batasan</span></div>
+    <nav>
+      <a href="index.html">Simulator</a>
+      <a href="guide.html">Panduan</a>
+      <a href="assumptions.html">Asumsi</a>
+      <a href="method.html" class="active">Metode</a>
+      <a href="sources.html">Sumber</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <h1>Metode</h1>
+    <p>Model tahunan 2026-2040 untuk sistem Jawa-Bali. Semua angka keuangan adalah selisih terhadap baseline:
+       PLTU pensiun di akhir PPA atau umur desain, dan PLTS atap tumbuh mengikuti tren dengan aturan sekarang (tanpa nilai ekspor).</p>
+
+    <h2>1. PLTS atap</h2>
+    <pre>hemat per kWp   = PVOUT x tarif x (porsi pakai sendiri + porsi ekspor x nilai ekspor)
+balik modal     = harga per kWp / hemat per kWp
+pangsa pasar    = exp(-0,3 x balik modal)                 (Beck 2009, dipakai NREL)
+tambahan pasar  = tren x porsi segmen x pangsa(skenario) / pangsa(aturan sekarang)
+tambahan total  = pasar + gedung pemerintah + program 450/900 VA, dibatasi kuota</pre>
+    <p>Respons pasar naik bertahap selama 4 tahun. Program 450/900 VA dibiayai pengalihan subsidi: kapasitas = anggaran / harga borongan per kWp.
+       PVOUT diambil dari Global Solar Atlas per kabupaten, lalu dirata-ratakan menurut penjualan listrik PLN per provinsi (Statistik PLN 2025).</p>
+
+    <h2>2. PLTU</h2>
+    <pre>energi unit     = MW x faktor kapasitas x 8.760 jam
+biaya variabel  = harga batu bara DMO per kcal x heat rate + biaya variabel lain
+baseline        = akhir PPA (IPP, 30 tahun) atau umur desain (PLN, 40 tahun)</pre>
+    <p>Energi PLTU yang pensiun dini digeser ke armada PLTU lain. Energi PLTS atap menggeser armada pada biaya, emisi, dan kematian rata-rata armada.</p>
+
+    <h2>3. Neraca PLN (Rp per tahun)</h2>
+    <pre>neraca PLN = - pendapatan hilang (energi pakai sendiri x tarif)
+             - kompensasi ekspor (energi ekspor x nilai ekspor x tarif)
+             + biaya energi dihemat
+             + pembayaran kapasitas IPP dihemat (atau O&amp;M tetap untuk PLTU PLN)
+             - porsi PLN dari kompensasi pensiun dini
+             - biaya pembangkit pengganti</pre>
+    <p>Kompensasi pensiun dini memakai dua pilihan: estimasi skema ETM (sekitar Rp1,1 miliar per MW per tahun dipercepat)
+       atau klaim PLN untuk Cirebon-1 (Rp60 T untuk lima tahun, sekitar Rp18 miliar per MW per tahun).
+       Untuk PLTU milik PLN, kompensasi berupa nilai buku yang hilang.</p>
+
+    <h2>4. APBN dan negara</h2>
+    <pre>APBN   = penutupan selisih PLN + subsidi dihemat + tagihan gedung pemerintah dihemat
+         - investasi PLTS gedung pemerintah - anggaran program - porsi APBN kompensasi
+negara = neraca PLN + bagian APBN di luar penutupan selisih PLN</pre>
+    <p>Tarif ditetapkan pemerintah, jadi kerugian PLN diasumsikan ditutup APBN lewat subsidi dan kompensasi.
+       Dana luar (ETM/JETP) dicatat terpisah, tidak masuk neraca negara.</p>
+
+    <h2>5. Keandalan</h2>
+    <p>Beban puncak tumbuh 4,45 persen per tahun (MKI). Daya mampu bertambah 1.000 MW per tahun sampai 2028, lalu PLN diasumsikan
+       membangun cukup pembangkit untuk menjaga reserve margin 33 persen. Jika paket memensiunkan PLTU dan cadangan jatuh di bawah
+       target, model menambah biaya pembangkit pengganti. PLTS atap tidak dihitung menambah daya mampu karena beban puncak terjadi malam hari.</p>
+
+    <h2>6. Dampak</h2>
+    <pre>CO2 dihindari      = emisi unit pensiun - (energi pensiun - energi PLTS tambahan) x faktor emisi armada
+kematian dihindari = kematian unit pensiun - (energi pensiun - energi PLTS tambahan) x kematian per GWh armada</pre>
+    <p>Kematian per GWh armada dari CREA dan IESR (2023): 10.500 kematian untuk 40,6 GW PLTU. Cirebon-1 memakai angka khusus CREA
+       (6.370 kematian dihindari 2036-2042 jika pensiun 2035). Nilai kesehatan US$0,7 juta per kematian.</p>
+
+    <h2>7. Kriteria Permen ESDM 10/2025</h2>
+    <p>Tujuh kriteria Pasal 11 ayat (1) dan tiga pertimbangan ayat (2) dinilai secara indikatif dari hasil model.
+       Ambang (usia 15 tahun, dana luar 50 persen, reserve margin 33 persen, kenaikan BPP 10 Rp/kWh) adalah asumsi tim.</p>
+
+    <h2>Batasan</h2>
+    <ul>
+      <li>Alat indikatif untuk diskusi kebijakan, bukan dokumen resmi PLN atau ESDM.</li>
+      <li>Kontrak IPP tidak publik. Pembayaran kapasitas dan kompensasi memakai asumsi.</li>
+      <li>Tidak ada simulasi dispatch per jam, aliran daya, atau stabilitas jaringan.</li>
+      <li>Angka kesehatan berasal dari pemodelan CREA, bukan pengukuran langsung.</li>
+      <li>Alokasi PLTS atap per provinsi mengikuti porsi penjualan listrik PLN, bukan potensi atap tiap provinsi.</li>
+      <li>Selisih tarif dan BPP untuk golongan non subsidi (kompensasi tarif) tidak dihitung terpisah.</li>
+    </ul>
+
+    <h2>Validasi</h2>
+    <p>Hitung tangan Paket Cirebon-1 untuk 2030, 2035, dan 2040 dicocokkan dengan hasil aplikasi (selisih di bawah 0,01 persen).
+       Uji kewajaran: baseline tanpa selisih, cadangan tahun dasar 34,9 persen. Uji arah: nilai ekspor naik menaikkan PLTS atap dan menurunkan neraca PLN.</p>
+  </main>
+</body>
+</html>

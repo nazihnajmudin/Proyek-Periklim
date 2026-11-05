@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sumber PowerShift</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="logo">PowerShift</span><span class="tagline">Sumber data dan lisensi</span></div>
+    <nav>
+      <a href="index.html">Simulator</a>
+      <a href="guide.html">Panduan</a>
+      <a href="assumptions.html">Asumsi</a>
+      <a href="method.html">Metode</a>
+      <a href="sources.html" class="active">Sumber</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <h1>Sumber Data dan Lisensi</h1>
+
+    <h2>Data utama</h2>
+    <table>
+      <tr><th>Data</th><th>Sumber</th><th>Lisensi</th><th>Pengolahan</th></tr>
+      <tr><td>PLTU per unit</td><td>Global Energy Monitor, Global Coal Plant Tracker, July 2026 release</td><td>CC BY 4.0</td><td>Difilter: operasi, non-captive, Jawa-Bali</td></tr>
+      <tr><td>Potensi surya (PVOUT)</td><td>Global Solar Atlas 2.0, World Bank Group, ESMAP, Solargis</td><td>CC BY 4.0</td><td>Nilai titik per kabupaten, dirata-ratakan per provinsi</td></tr>
+      <tr><td>Batas provinsi</td><td>geoBoundaries IDN ADM1 (OpenStreetMap, Wambacher), Runfola et al. 2020</td><td>ODbL 1.0</td><td>Geometri disederhanakan</td></tr>
+      <tr><td>Batas kabupaten/kota</td><td>geoBoundaries IDN ADM2 (BPS, WFP, OCHA ROAP), Runfola et al. 2020</td><td>CC BY 3.0 IGO</td><td>Geometri disederhanakan</td></tr>
+      <tr><td>Penjualan, pelanggan, tarif rata-rata per provinsi</td><td>PT PLN (Persero), Statistik PLN 2025 (unaudited), Tabel 4, 6, 9</td><td>Dikutip</td><td>Penjualan per provinsi untuk alokasi PLTS atap, tarif rata-rata bisnis, industri, gedung pemerintah</td></tr>
+      <tr><td>Dampak kesehatan</td><td>CREA dan IESR (2023), Health Benefits of Just Energy Transition and Coal Phase-out in Indonesia</td><td>Dikutip</td><td>Faktor kematian per GW</td></tr>
+      <tr><td>Peta dasar</td><td>OpenStreetMap contributors (tile.openstreetmap.org)</td><td>ODbL 1.0, kebijakan penggunaan tile OSM</td><td>Ditampilkan abu-abu</td></tr>
+    </table>
+
+    <h2>Angka pendukung</h2>
+    <table>
+      <tr><th>Kode</th><th>Isi</th><th>Tautan</th></tr>
+      <tr><td><code>B-MATAHARI-2024</code></td><td>Daya mampu 37.364 MW dan beban puncak 28.077 MW Jamali (12 Februari 2024)</td><td><a href="https://matahari.tv/pln-uip2b-jamali-proyeksikan-sistem-kelistrikan-jawa-madura-dan-bali-dalam-kondisi-aman-di-hari-h-pemilu/">matahari.tv</a></td></tr>
+      <tr><td><code>B-PETROMINDO-RESERVE</code></td><td>Reserve margin 37,5% (2025), di bawah 33-35% pada 2027, pertumbuhan 4,45% (White Paper MKI)</td><td><a href="https://www.petromindo.com/news/article/indonesia-s-power-reserve-could-fall-below-safe-level-by-2027-experts-warn">Petromindo</a></td></tr>
+      <tr><td><code>B-CNBC-SALES-2025</code></td><td>Penjualan PLN 2025: 317,69 TWh</td><td><a href="https://www.cnbcindonesia.com/news/20260201105811-4-707073/konsumsi-listrik-ri-di-2025-tumbuh-375">CNBC Indonesia</a></td></tr>
+      <tr><td><code>B-KONTAN-SUBSIDI-2026</code></td><td>Subsidi 2026 Rp97,37-104,97 T, 44,88 juta pelanggan, BPP Rp1.828-1.920/kWh, kurs Rp16.500</td><td><a href="https://nasional.kontan.co.id/news/subsidi-listrik-diusulkan-capai-rp-10497-triliun-di-tahun-2026">Kontan</a></td></tr>
+      <tr><td><code>B-KOMPASTV-TARIF-2026</code></td><td>Tarif listrik per golongan 2026</td><td><a href="https://www.kompas.tv/ekonomi/640978/resmi-tarif-listrik-pln-per-kwh-januari-2026-subsidi-dan-non-subsidi-tidak-naik">Kompas TV</a></td></tr>
+      <tr><td><code>B-KONTAN-ROOFTOP-2025</code></td><td>PLTS atap terpasang 538 MWp, Juli 2025</td><td><a href="https://industri.kontan.co.id/news/realisasi-terpasang-plts-atap-sebesar-538-mwp-hingga-juli-2025">Kontan</a></td></tr>
+      <tr><td><code>B-PETROMINDO-CIREBON-BATAL</code></td><td>Pembatalan pensiun dini Cirebon-1, klaim kompensasi Rp60 T (5 Desember 2025)</td><td><a href="https://www.petromindo.com/news/article/airlangga-confirms-cirebon-1-early-retirement-canceled-adb-funds-to-be-shifted">Petromindo</a></td></tr>
+      <tr><td><code>B-ADB-CIREBON</code></td><td>Kesepakatan pensiun Cirebon-1 Desember 2035, PPA semula Juli 2042</td><td><a href="https://www.adb.org/news/new-agreement-aims-retire-indonesia-660-mw-coal-plant-almost-7-years-early">ADB</a></td></tr>
+      <tr><td><code>B-ECOBUSINESS-CIREBON</code></td><td>300 pekerja Cirebon-1, CREA: 6.370 kematian dihindari 2036-2042</td><td><a href="https://www.eco-business.com/news/indonesias-first-early-coal-retirement-raises-concerns-over-labour-rights-and-environmental-damage-compensation">Eco-Business</a></td></tr>
+      <tr><td><code>B-CNN-20250422</code></td><td>Kriteria pensiun dini Pasal 11 Permen ESDM 10/2025</td><td><a href="https://www.cnnindonesia.com/ekonomi/20250422145518-85-1221332/bahlil-rilis-aturan-peta-jalan-pensiun-dini-pltu">CNN Indonesia</a></td></tr>
+      <tr><td><code>P-CEEW-2017</code></td><td>24,72 job-year per MW PLTS atap</td><td><a href="https://www.downtoearth.org.in/amp/story/energy/rooftop-solar-power-s-massive-job-potential-untapped-60563">Down To Earth</a></td></tr>
+      <tr><td><code>P-IEEFA-2017</code></td><td>Mekanisme pembayaran kapasitas PLTU IPP</td><td><a href="https://ieefa.org/resources/overpaid-and-underutilized-how-capacity-payments-could-lock-indonesia-high-cost">IEEFA</a></td></tr>
+      <tr><td><code>P-NREL-SOLARDS</code></td><td>Kurva pangsa pasar vs balik modal (Beck 2009)</td><td><a href="https://www.nrel.gov/docs/fy10osti/45832.pdf">NREL</a></td></tr>
+    </table>
+    <p>Daftar lengkap ada di laporan PowerShift. Kode lain di halaman Asumsi mengacu ke daftar tersebut.</p>
+
+    <h2>Atribusi</h2>
+    <pre>Data PLTU: Global Energy Monitor, Global Coal Plant Tracker, July 2026 release, CC BY 4.0. Difilter untuk sistem Jawa-Bali dan diolah oleh tim PowerShift.
+Potensi surya: Global Solar Atlas 2.0, World Bank Group, ESMAP, Solargis, CC BY 4.0. Dirata-ratakan per provinsi oleh tim PowerShift.
+Batas wilayah: geoBoundaries (Runfola et al., 2020). ADM1 ODbL 1.0, ADM2 CC BY 3.0 IGO. Geometri disederhanakan.
+Peta dasar: (c) OpenStreetMap contributors.
+Library: Leaflet (BSD 2-Clause), Chart.js (MIT).</pre>
+  </main>
+</body>
+</html>
