@@ -1,0 +1,58 @@
+[
+ {
+  "id": "jakarta",
+  "name": "DKI Jakarta",
+  "pop": 10.68,
+  "pvout": 1351.5,
+  "sales_gwh": 38195.56,
+  "customers": 5578664
+ },
+ {
+  "id": "banten",
+  "name": "Banten",
+  "pop": 12.43,
+  "pvout": 1330.7,
+  "sales_gwh": 29234.24,
+  "customers": 4321299
+ },
+ {
+  "id": "jabar",
+  "name": "Jawa Barat",
+  "pop": 50.35,
+  "pvout": 1408.9,
+  "sales_gwh": 63503.3,
+  "customers": 18143215
+ },
+ {
+  "id": "jateng",
+  "name": "Jawa Tengah",
+  "pop": 37.89,
+  "pvout": 1458.4,
+  "sales_gwh": 31782.11,
+  "customers": 12579033
+ },
+ {
+  "id": "diy",
+  "name": "DI Yogyakarta",
+  "pop": 3.67,
+  "pvout": 1462.4,
+  "sales_gwh": 4022.32,
+  "customers": 1606065
+ },
+ {
+  "id": "jatim",
+  "name": "Jawa Timur",
+  "pop": 41.81,
+  "pvout": 1532.0,
+  "sales_gwh": 46263.66,
+  "customers": 14658421
+ },
+ {
+  "id": "bali",
+  "name": "Bali",
+  "pop": 4.32,
+  "pvout": 1437.1,
+  "sales_gwh": 7758.0,
+  "customers": 1903494
+ }
+]
