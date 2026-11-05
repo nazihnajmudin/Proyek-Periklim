@@ -1,0 +1,131 @@
+id,name,province,lat,lon
+r000,Badung,bali,-8.5419,115.1982
+r001,Bandung,jabar,-7.0632,107.6335
+r002,Bandung Barat,jabar,-6.9064,107.4119
+r003,Bangkalan,jatim,-7.0466,112.8962
+r004,Bangli,bali,-8.3336,115.3687
+r005,Banjarnegara,jateng,-7.353,109.6576
+r006,Bantul,diy,-7.8986,110.3855
+r007,Banyumas,jateng,-7.4528,109.1165
+r008,Banyuwangi,jatim,-8.3322,114.1416
+r009,Batang,jateng,-7.0329,109.8672
+r010,Bekasi,jabar,-6.2003,107.1617
+r011,Blitar,jatim,-8.1301,112.3118
+r012,Blora,jateng,-7.1105,111.4219
+r013,Bogor,jabar,-6.5449,107.002
+r014,Bojonegoro,jatim,-7.2278,111.809
+r015,Bondowoso,jatim,-7.9438,113.8821
+r016,Boyolali,jateng,-7.3873,110.7042
+r017,Brebes,jateng,-7.0523,108.8882
+r018,Buleleng,bali,-8.2213,114.9908
+r019,Ciamis,jabar,-7.3105,108.4005
+r020,Cianjur,jabar,-7.0537,107.0694
+r021,Cilacap,jateng,-7.4598,108.8043
+r022,Cirebon,jabar,-6.7616,108.4565
+r023,Demak,jateng,-6.923,110.6294
+r024,Garut,jabar,-7.3426,107.7029
+r025,Gianyar,bali,-8.4808,115.286
+r026,Gresik,jatim,-5.7945,112.6599
+r027,Grobogan,jateng,-7.0991,110.8972
+r028,Gunung Kidul,diy,-7.9933,110.5573
+r029,Hutan,jateng,-7.1716,110.3622
+r030,Indramayu,jabar,-6.4499,108.1818
+r031,Jember,jatim,-8.2626,113.6276
+r032,Jembrana,bali,-8.3138,114.6696
+r033,Jepara,jateng,-6.6,110.7831
+r034,Jombang,jatim,-7.5606,112.2423
+r035,Karang Asem,bali,-8.3601,115.5473
+r036,Karanganyar,jateng,-7.62,111.07
+r037,Karawang,jabar,-6.2647,107.429
+r038,Kebumen,jateng,-7.6433,109.6094
+r039,Kediri,jatim,-7.801,112.1655
+r040,Kendal,jateng,-7.0189,110.1408
+r041,Klaten,jateng,-7.6756,110.6272
+r042,Klungkung,bali,-8.7454,115.5344
+r043,Kota Bandung,jabar,-6.9034,107.6298
+r044,Kota Banjar,jabar,-7.3802,108.5609
+r045,Kota Batu,jatim,-7.8334,112.5298
+r046,Kota Bekasi,jabar,-6.2854,106.974
+r047,Kota Blitar,jatim,-8.0977,112.1678
+r048,Kota Bogor,jabar,-6.5953,106.801
+r049,Kota Cilegon,banten,-5.9787,106.0264
+r050,Kota Cimahi,jabar,-6.8836,107.5449
+r051,Kota Cirebon,jabar,-6.7445,108.5569
+r052,Kota Denpasar,bali,-8.672,115.2205
+r053,Kota Depok,jabar,-6.3878,106.816
+r054,Kota Jakarta Barat,jakarta,-6.1608,106.7446
+r055,Kota Jakarta Pusat,jakarta,-6.184,106.8429
+r056,Kota Jakarta Selatan,jakarta,-6.2847,106.8043
+r057,Kota Jakarta Timur,jakarta,-6.2611,106.8822
+r058,Kota Jakarta Utara,jakarta,-6.1361,106.9006
+r059,Kota Kediri,jatim,-7.823,112.0012
+r060,Kota Madiun,jatim,-7.6315,111.5257
+r061,Kota Magelang,jateng,-7.4727,110.2196
+r062,Kota Malang,jatim,-7.9815,112.6449
+r063,Kota Mojokerto,jatim,-7.4707,112.4385
+r064,Kota Pasuruan,jatim,-7.6519,112.9087
+r065,Kota Pekalongan,jateng,-6.8936,109.6765
+r066,Kota Probolinggo,jatim,-7.7712,113.1991
+r067,Kota Salatiga,jateng,-7.3374,110.4988
+r068,Kota Semarang,jateng,-7.0239,110.3846
+r069,Kota Serang,banten,-6.1159,106.1569
+r070,Kota Sukabumi,jabar,-6.9357,106.9314
+r071,Kota Surabaya,jatim,-7.273,112.7358
+r072,Kota Surakarta,jateng,-7.5595,110.8213
+r073,Kota Tangerang,banten,-6.1765,106.6328
+r074,Kota Tangerang Selatan,banten,-6.2956,106.7113
+r075,Kota Tasikmalaya,jabar,-7.3598,108.227
+r076,Kota Tegal,jateng,-6.8684,109.1153
+r077,Kota Yogyakarta,diy,-7.805,110.3739
+r078,Kudus,jateng,-6.7971,110.868
+r079,Kulon Progo,diy,-7.8133,110.1502
+r080,Kuningan,jabar,-6.9873,108.5538
+r081,Lamongan,jatim,-7.1222,112.3294
+r082,Lebak,banten,-6.6408,106.1878
+r083,Lumajang,jatim,-8.1248,113.1443
+r084,Madiun,jatim,-7.6124,111.6733
+r085,Magelang,jateng,-7.5137,110.214
+r086,Magetan,jatim,-7.6544,111.3357
+r087,Majalengka,jabar,-6.8078,108.2837
+r088,Malang,jatim,-8.1032,112.6881
+r089,Mojokerto,jatim,-7.5418,112.5094
+r090,Nganjuk,jatim,-7.6157,111.9464
+r091,Ngawi,jatim,-7.4304,111.3909
+r092,Pacitan,jatim,-8.1036,111.1441
+r093,Pamekasan,jatim,-7.0714,113.5005
+r094,Pandeglang,banten,-6.5459,105.7991
+r095,Pangandaran,jabar,-7.6421,108.5565
+r096,Pasuruan,jatim,-7.7548,112.8186
+r097,Pati,jateng,-6.7073,111.0867
+r098,Pekalongan,jateng,-7.0432,109.6191
+r099,Pemalang,jateng,-7.0105,109.3916
+r100,Ponorogo,jatim,-7.97,111.4976
+r101,Probolinggo,jatim,-7.8618,113.3053
+r102,Purbalingga,jateng,-7.3264,109.4001
+r103,Purwakarta,jabar,-6.5925,107.4035
+r104,Purworejo,jateng,-7.7082,109.9704
+r105,Rembang,jateng,-6.7698,111.4552
+r106,Sampang,jatim,-7.0576,113.2537
+r107,Semarang,jateng,-7.2877,110.4017
+r108,Serang,banten,-6.1068,105.9879
+r109,Sidoarjo,jatim,-7.4535,112.6592
+r110,Situbondo,jatim,-7.7986,114.2647
+r111,Sleman,diy,-7.6942,110.3801
+r112,Sragen,jateng,-7.3939,110.9524
+r113,Subang,jabar,-6.4974,107.7353
+r114,Sukabumi,jabar,-7.0773,106.734
+r115,Sukoharjo,jateng,-7.6825,110.8673
+r116,Sumedang,jabar,-6.8104,107.9615
+r117,Sumenep,jatim,-7.0011,113.836
+r118,Tabanan,bali,-8.4389,115.0723
+r119,Tangerang,banten,-6.1832,106.4716
+r120,Tasikmalaya,jabar,-7.4279,108.069
+r121,Tegal,jateng,-7.0556,109.1327
+r122,Temanggung,jateng,-7.2395,110.1216
+r123,Trenggalek,jatim,-8.135,111.6486
+r124,Tuban,jatim,-6.9579,111.8923
+r125,Tulungagung,jatim,-8.0704,111.8977
+r126,Waduk Cirata,jabar,-6.7552,107.2859
+r127,Wadung Kedungombo,jateng,-7.295,110.8217
+r128,Wonogiri,jateng,-7.9628,110.9576
+r129,Wonosobo,jateng,-7.3988,109.9207

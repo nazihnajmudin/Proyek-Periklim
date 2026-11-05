@@ -1,0 +1,421 @@
+{
+ "system": {
+  "base_year": {
+   "value": 2025,
+   "unit": "tahun",
+   "label": "Tahun dasar",
+   "source": "-",
+   "status": "assumption"
+  },
+  "peak_mw_2024": {
+   "value": 28077,
+   "unit": "MW",
+   "label": "Beban puncak tertinggi Jawa-Madura-Bali",
+   "source": "B-MATAHARI-2024",
+   "status": "verified",
+   "note": "Rilis PLN UIP2B Jamali, 12 Februari 2024"
+  },
+  "reserve_margin_2025": {
+   "value": 0.375,
+   "unit": "fraksi",
+   "label": "Reserve margin Jawa-Madura-Bali 2025",
+   "source": "B-PETROMINDO-RESERVE",
+   "status": "verified",
+   "note": "White Paper MKI 2025"
+  },
+  "demand_growth": {
+   "value": 0.0445,
+   "unit": "per tahun",
+   "label": "Pertumbuhan beban dan penjualan",
+   "source": "B-PETROMINDO-RESERVE",
+   "status": "verified",
+   "note": "Asumsi MKI"
+  },
+  "firm_add_mw_early": {
+   "value": 1000,
+   "unit": "MW/tahun",
+   "label": "Tambahan daya mampu 2026-2028",
+   "source": "B-PETROMINDO-RESERVE",
+   "status": "assumption",
+   "note": "Dikalibrasi agar reserve margin turun di bawah 33 persen pada 2027 sesuai MKI"
+  },
+  "rm_threshold": {
+   "value": 0.33,
+   "unit": "fraksi",
+   "label": "Batas bawah reserve margin yang direkomendasikan",
+   "source": "B-PETROMINDO-RESERVE",
+   "status": "verified",
+   "note": "Rentang rekomendasi 33-35 persen"
+  },
+  "sales_national_twh_2025": {
+   "value": 317.69,
+   "unit": "TWh",
+   "label": "Penjualan listrik PLN 2025",
+   "source": "B-CNBC-SALES-2025",
+   "status": "verified"
+  },
+  "jb_share_sales": {
+   "value": 0.695,
+   "unit": "fraksi",
+   "label": "Porsi penjualan Jawa-Bali",
+   "source": "D-PLN-STAT-2025",
+   "status": "verified",
+   "note": "Jawa 213.001 GWh + Bali 7.758 GWh dari 317.692 GWh (Tabel 6)"
+  },
+  "bpp_rp_kwh": {
+   "value": 1874,
+   "unit": "Rp/kWh",
+   "label": "Biaya pokok penyediaan 2026",
+   "source": "B-KONTAN-SUBSIDI-2026",
+   "status": "verified",
+   "note": "Tengah rentang Rp1.828-1.920/kWh"
+  },
+  "usd_idr": {
+   "value": 16500,
+   "unit": "Rp/US$",
+   "label": "Kurs",
+   "source": "B-KONTAN-SUBSIDI-2026",
+   "status": "verified",
+   "note": "Asumsi kurs subsidi 2026"
+  },
+  "discount_rate": {
+   "value": 0.08,
+   "unit": "per tahun",
+   "label": "Tingkat diskonto NPV",
+   "source": "assumption",
+   "status": "assumption"
+  },
+  "pass_through": {
+   "value": 1.0,
+   "unit": "fraksi",
+   "label": "Porsi kerugian PLN yang ditutup APBN",
+   "source": "assumption",
+   "status": "assumption",
+   "note": "Tarif ditetapkan pemerintah, selisih ditutup subsidi dan kompensasi"
+  },
+  "plan_from_year": {
+   "value": 2029,
+   "unit": "tahun",
+   "label": "Mulai tahun PLN menambah pembangkit untuk menjaga target cadangan",
+   "source": "B-LISTRIKID-RUPTL-JAMALI",
+   "status": "assumption",
+   "note": "RUPTL 2025-2034 menambah 33,5 GW di Jamali, diasumsikan cukup menjaga cadangan di batas rekomendasi"
+  }
+ },
+ "coal": {
+  "coal_price_usd_t": {
+   "value": 70,
+   "unit": "US$/ton",
+   "label": "Harga batu bara DMO untuk PLN",
+   "source": "B-KONTAN-DMO-2026",
+   "status": "verified",
+   "note": "Tetap sejak 2018 (Kontan, 17 November 2025)"
+  },
+  "coal_kcal_kg": {
+   "value": 6322,
+   "unit": "kcal/kg",
+   "label": "Kalori acuan harga DMO",
+   "source": "B-KONTAN-DMO-2026",
+   "status": "perlu-cek"
+  },
+  "vom_rp_kwh": {
+   "value": 50,
+   "unit": "Rp/kWh",
+   "label": "Biaya variabel non bahan bakar PLTU",
+   "source": "assumption",
+   "status": "assumption"
+  },
+  "cap_charge_usd_kw_yr": {
+   "value": 175,
+   "unit": "US$/kW/tahun",
+   "label": "Pembayaran kapasitas IPP (komponen A)",
+   "source": "P-IEEFA-2017",
+   "status": "assumption",
+   "note": "Sekitar 2,5 sen US$/kWh x faktor ketersediaan 80 persen. Kontrak IPP tidak publik"
+  },
+  "fixed_om_usd_kw_yr": {
+   "value": 40,
+   "unit": "US$/kW/tahun",
+   "label": "Biaya tetap O&M PLTU milik PLN",
+   "source": "assumption",
+   "status": "assumption"
+  },
+  "book_value_usd_mw_2022": {
+   "value": 762000,
+   "unit": "US$/MW",
+   "label": "Nilai buku PLTU milik PLN tahun 2022",
+   "source": "B-PELABUHANRATU-VALUASI",
+   "status": "perlu-cek",
+   "note": "Valuasi Pelabuhan Ratu sekitar US$800 juta untuk 1.050 MW, disusutkan linier ke tahun pensiun baseline"
+  },
+  "comp_etm_rp_mw_yr": {
+   "value": 1045000000.0,
+   "unit": "Rp/MW/tahun dipercepat",
+   "label": "Kompensasi pensiun dini, estimasi skema ETM",
+   "source": "B-REUTERS-CIREBON-2022",
+   "status": "verified",
+   "note": "Refinancing Cirebon-1 US$250-300 juta (Reuters 2022), titik tengah US$275 juta x Rp16.500 untuk 660 MW dipercepat 6,6 tahun (Desember 2035 ke Juli 2042)"
+  },
+  "comp_pln_rp_mw_yr": {
+   "value": 18180000000.0,
+   "unit": "Rp/MW/tahun dipercepat",
+   "label": "Kompensasi pensiun dini, klaim PLN",
+   "source": "B-PETROMINDO-CIREBON-BATAL",
+   "status": "verified",
+   "note": "Rp60 T untuk percepatan Cirebon-1 lima tahun"
+  },
+  "workers_per_mw": {
+   "value": 0.4545,
+   "unit": "orang/MW",
+   "label": "Pekerja langsung per MW",
+   "source": "B-ECOBUSINESS-CIREBON",
+   "status": "verified",
+   "note": "300 pekerja di Cirebon-1 660 MW"
+  },
+  "replacement_usd_kw_yr": {
+   "value": 120,
+   "unit": "US$/kW/tahun",
+   "label": "Biaya kapasitas pembangkit pengganti",
+   "source": "assumption",
+   "status": "assumption",
+   "note": "Biaya tahunan pembangkit cadangan baru (PLTG peaker atau baterai), sekitar US$800/kW x faktor pemulihan modal 0,12 + O&M tetap"
+  }
+ },
+ "health": {
+  "deaths_per_gw_yr": {
+   "value": 258.6,
+   "unit": "kematian/GW/tahun",
+   "label": "Kematian dini rata-rata armada PLTU",
+   "source": "P-CREA-IESR-2023",
+   "status": "verified",
+   "note": "10.500 kematian 2022, kapasitas 40,6 GW"
+  },
+  "usd_per_death": {
+   "value": 704762,
+   "unit": "US$/kematian",
+   "label": "Biaya kesehatan per kematian",
+   "source": "P-CREA-IESR-2023",
+   "status": "verified",
+   "note": "US$7,4 miliar untuk 10.500 kematian"
+  }
+ },
+ "pv": {
+  "installed_national_mwp_2025": {
+   "value": 538,
+   "unit": "MWp",
+   "label": "PLTS atap terpasang nasional Juli 2025",
+   "source": "B-KONTAN-ROOFTOP-2025",
+   "status": "verified"
+  },
+  "jb_share_pv": {
+   "value": 0.8,
+   "unit": "fraksi",
+   "label": "Porsi PLTS atap di Jawa-Bali",
+   "source": "assumption",
+   "status": "assumption"
+  },
+  "trend_add_mwp_yr": {
+   "value": 240,
+   "unit": "MWp/tahun",
+   "label": "Tambahan PLTS atap Jawa-Bali dengan aturan sekarang",
+   "source": "B-KONTAN-ROOFTOP-2025",
+   "status": "assumption",
+   "note": "Sekitar 300 MWp/tahun nasional (Maret-Juli 2025) x porsi Jawa-Bali"
+  },
+  "quota_mw_yr": {
+   "value": 800,
+   "unit": "MW/tahun",
+   "label": "Kuota PLTS atap Jawa-Bali per tahun",
+   "source": "B-PVMAG-QUOTA",
+   "status": "assumption",
+   "note": "Kuota nasional 5.746 MW 2024-2028 x 0,7"
+  },
+  "payback_k": {
+   "value": 0.3,
+   "unit": "1/tahun",
+   "label": "Koefisien kurva pangsa pasar vs balik modal",
+   "source": "P-NREL-SOLARDS",
+   "status": "perlu-cek",
+   "note": "Pangsa maksimum = exp(-0,3 x balik modal), Beck 2009"
+  },
+  "lifetime_yr": {
+   "value": 25,
+   "unit": "tahun",
+   "label": "Umur PLTS atap",
+   "source": "assumption",
+   "status": "assumption"
+  },
+  "jobs_per_mw": {
+   "value": 24.72,
+   "unit": "job-year/MW",
+   "label": "Lapangan kerja PLTS atap",
+   "source": "P-CEEW-2017",
+   "status": "verified",
+   "note": "CEEW 2017 via Down To Earth"
+  },
+  "daytime_factor": {
+   "value": 0.75,
+   "unit": "fraksi",
+   "label": "Keluaran puncak AC per kWp",
+   "source": "assumption",
+   "status": "assumption"
+  },
+  "segments": {
+   "rt": {
+    "value": {
+     "label": "Rumah tangga non subsidi",
+     "split": 0.2,
+     "price": 15000000.0,
+     "self": 0.4,
+     "tariff": 1444.7
+    },
+    "unit": "-",
+    "label": "Rumah tangga non subsidi",
+    "source": "B-KOMPASTV-TARIF-2026",
+    "status": "assumption",
+    "note": "Tarif R-1 1.300-2.200 VA (terverifikasi). Harga Rp14-20 juta/kWp (detik). Split dan porsi pakai sendiri asumsi"
+   },
+   "bisnis": {
+    "value": {
+     "label": "Bisnis",
+     "split": 0.25,
+     "price": 13000000.0,
+     "self": 0.8,
+     "tariff": 1224.83
+    },
+    "unit": "-",
+    "label": "Bisnis",
+    "source": "D-PLN-STAT-2025",
+    "status": "assumption",
+    "note": "Tarif rata-rata bisnis Jawa 2025 (Tabel 9). Harga, split, porsi pakai sendiri asumsi"
+   },
+   "industri": {
+    "value": {
+     "label": "Industri",
+     "split": 0.5,
+     "price": 11000000.0,
+     "self": 0.9,
+     "tariff": 1085.39
+    },
+    "unit": "-",
+    "label": "Industri",
+    "source": "D-PLN-STAT-2025",
+    "status": "assumption",
+    "note": "Tarif rata-rata industri Jawa 2025 (Tabel 9). Harga, split, porsi pakai sendiri asumsi"
+   },
+   "pemerintah": {
+    "value": {
+     "label": "Gedung pemerintah",
+     "split": 0.05,
+     "price": 13000000.0,
+     "self": 0.8,
+     "tariff": 1583.12
+    },
+    "unit": "-",
+    "label": "Gedung pemerintah",
+    "source": "D-PLN-STAT-2025",
+    "status": "assumption",
+    "note": "Tarif rata-rata gedung pemerintah Jawa 2025 (Tabel 9). Harga, split, porsi pakai sendiri asumsi"
+   },
+   "program": {
+    "value": {
+     "label": "Program 450/900 VA",
+     "split": 0.0,
+     "price": 12000000.0,
+     "self": 0.5,
+     "tariff": 605
+    },
+    "unit": "-",
+    "label": "Program rumah tangga subsidi",
+    "source": "B-KOMPASTV-TARIF-2026",
+    "status": "assumption",
+    "note": "Tarif R-1 900 VA subsidi (terverifikasi). Harga borongan asumsi"
+   }
+  },
+  "adoption_ramp_yr": {
+   "value": 4,
+   "unit": "tahun",
+   "label": "Lama respons pasar PLTS atap terhadap perubahan aturan",
+   "source": "assumption",
+   "status": "assumption",
+   "note": "Respons naik linier sampai penuh setelah sekian tahun"
+  }
+ },
+ "subsidy": {
+  "subsidy_rp_2026": {
+   "value": 101170000000000.0,
+   "unit": "Rp/tahun",
+   "label": "Subsidi listrik 2026",
+   "source": "B-KONTAN-SUBSIDI-2026",
+   "status": "verified",
+   "note": "Tengah rentang Rp97,37-104,97 T"
+  },
+  "subsidized_customers": {
+   "value": 44880000.0,
+   "unit": "pelanggan",
+   "label": "Pelanggan subsidi 2026",
+   "source": "B-KONTAN-SUBSIDI-2026",
+   "status": "verified"
+  },
+  "jb_share_subsidy": {
+   "value": 0.61,
+   "unit": "fraksi",
+   "label": "Porsi subsidi di Jawa-Bali",
+   "source": "D-PLN-STAT-2025",
+   "status": "assumption",
+   "note": "Proksi: porsi pelanggan rumah tangga Jawa-Bali 61 persen (Tabel 4). Rincian pelanggan subsidi per UID tidak tersedia"
+  }
+ },
+ "population_m": {
+  "jakarta": {
+   "value": 10.68,
+   "unit": "juta",
+   "label": "DKI Jakarta",
+   "source": "B-ANTARA-PENDUDUK-2024",
+   "status": "perlu-cek"
+  },
+  "banten": {
+   "value": 12.43,
+   "unit": "juta",
+   "label": "Banten",
+   "source": "B-ANTARA-PENDUDUK-2024",
+   "status": "perlu-cek"
+  },
+  "jabar": {
+   "value": 50.35,
+   "unit": "juta",
+   "label": "Jawa Barat",
+   "source": "B-ANTARA-PENDUDUK-2024",
+   "status": "perlu-cek"
+  },
+  "jateng": {
+   "value": 37.89,
+   "unit": "juta",
+   "label": "Jawa Tengah",
+   "source": "B-ANTARA-PENDUDUK-2024",
+   "status": "perlu-cek"
+  },
+  "diy": {
+   "value": 3.67,
+   "unit": "juta",
+   "label": "DI Yogyakarta",
+   "source": "B-BPS-DIY-SP2020",
+   "status": "perlu-cek",
+   "note": "Sensus 2020"
+  },
+  "jatim": {
+   "value": 41.81,
+   "unit": "juta",
+   "label": "Jawa Timur",
+   "source": "B-ANTARA-PENDUDUK-2024",
+   "status": "perlu-cek"
+  },
+  "bali": {
+   "value": 4.32,
+   "unit": "juta",
+   "label": "Bali",
+   "source": "B-BPS-BALI-2024",
+   "status": "perlu-cek"
+  }
+ }
+}
