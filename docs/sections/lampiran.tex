@@ -1,8 +1,38 @@
 \section{Hitung Tangan Paket Cirebon-1}
 \label{app:hitung}
 
+Hitung tangan disusun independen dari kode aplikasi untuk preset Paket Cirebon-1: nilai ekspor 65\%, kuota 1.500 MW per tahun, gedung pemerintah 100 MW per tahun, 5\% subsidi dialihkan, Cirebon-1 pensiun 2035, dan 25\% kompensasi ditanggung PLN. Selisih dengan hasil aplikasi di bawah 0,01\% untuk seluruh komponen.
+
+\begin{table}[H]
+\centering
+\caption{Hitung tangan neraca PLN Paket Cirebon-1 terhadap baseline}
+\small
+\input{tables/hitung_tangan}
+\end{table}
+
+Langkah perhitungan:
+\begin{enumerate}
+  \item PVOUT rata-rata tertimbang penjualan listrik PLN per provinsi: 1.423,5 kWh/kWp per tahun.
+  \item Balik modal rumah tangga non subsidi tanpa ekspor: Rp15 juta / (1.423,5 $\times$ 1.444,70 $\times$ 0,4) = 18,2 tahun. Dengan ekspor 65\%: 9,2 tahun.
+  \item Tambahan pasar = tren $\times$ porsi segmen $\times$ exp($-$0,3 $\times$ 9,2) / exp($-$0,3 $\times$ 18,2), naik bertahap selama 4 tahun dan dibatasi kuota.
+  \item Biaya marjinal armada PLTU: Rp494 per kWh dari harga DMO US\$70 per ton dan heat rate GEM.
+  \item Cirebon-1 pada 2035: pembayaran kapasitas 660 MW $\times$ US\$175/kW $\times$ Rp16.500 = Rp1,91 triliun. Porsi PLN kompensasi 25\% $\times$ Rp1,045 miliar $\times$ 660 MW = Rp0,17 triliun. Pembangkit pengganti 660 MW $\times$ US\$120/kW $\times$ Rp16.500 = Rp1,31 triliun.
+\end{enumerate}
+
 \section{Tabel Asumsi}
 \label{app:asumsi}
 
-\section{Data Ringkas}
+Status ``terverifikasi'' berarti angka dicocokkan dengan dokumen sumber. Kode sumber mengacu pada daftar pustaka (lihat juga halaman Sumber di aplikasi).
+
+{\small
+\input{tables/asumsi}
+}
+
+\section{Daftar Unit PLTU}
 \label{app:data}
+
+Unit PLTU operasi terhubung jaringan PLN di Jawa-Bali \parencite{D-GEM-GCPT}. Tahun pensiun baseline memakai rencana pensiun GEM jika ada, akhir PPA 30 tahun untuk IPP, atau umur desain 40 tahun untuk PLTU milik PLN.
+
+{\small
+\input{tables/unit_pltu}
+}

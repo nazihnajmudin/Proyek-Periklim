@@ -3,6 +3,40 @@
 
 \subsection{Sektor Ketenagalistrikan dan Komitmen Iklim}
 
+Pemanasan global akibat aktivitas manusia telah meningkatkan risiko cuaca ekstrem, kekeringan, dan kenaikan muka laut \parencite{P-IPCC-2023}. Di Indonesia, pembangkit listrik tenaga uap (PLTU) batu bara adalah sumber emisi dan polusi udara yang dominan. Sistem Jawa-Madura-Bali (Jamali), interkoneksi terbesar di Indonesia, saat ini mengoperasikan 57 unit PLTU terhubung jaringan PLN dengan kapasitas 30,8 GW dan emisi sekitar 169 juta ton CO$_2$ per tahun \parencite{D-GEM-GCPT}.
+
+Pemerintah sudah memiliki dasar hukum untuk mengakhiri PLTU lebih awal. Perpres 112/2022 mengamanatkan peta jalan pengakhiran operasi PLTU \parencite{R-PERPRES-112-2022}, dan Permen ESDM 10/2025 menurunkannya menjadi tujuh kriteria pensiun dini serta kewajiban kajian PLN paling lama enam bulan \parencite{R-PERMEN-ESDM-10-2025,B-CNN-20250422}. Di sisi energi bersih, PLTS atap adalah teknologi yang paling cepat dipasang oleh masyarakat. Namun hingga Juli 2025 kapasitas terpasangnya baru 538 MWp di 10.882 pelanggan \parencite{B-KONTAN-ROOFTOP-2025}.
+
 \subsection{Rantai Hambatan Transisi}
 
+Kajian ini berangkat dari pengamatan bahwa hambatan utama transisi bukan ketidaktertarikan warga terhadap PLTS atap, melainkan posisi keuangan PLN dan negara. Rantainya digambarkan pada Gambar~\ref{fig:rantai}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.55cm, box/.style={draw, rounded corners, align=center, font=\footnotesize, text width=3.4cm, minimum height=1.1cm, fill=gray!6}, arr/.style={-{Stealth}, thick}]
+\node[box] (a) {Oversupply Jamali dan kontrak take-or-pay PLTU IPP};
+\node[box, right=of a] (b) {PLTS atap mengurangi penjualan PLN, biaya kapasitas PLTU tetap dibayar};
+\node[box, right=of b] (c) {Kerugian PLN menjadi beban APBN karena tarif ditetapkan pemerintah};
+\node[box, below=of c] (d) {Permen ESDM 2/2024: net metering dihapus, kuota PLTS atap};
+\node[box, left=of d] (e) {PLTS atap tidak menarik bagi rumah tangga};
+\node[box, left=of e] (f) {Pensiun dini dianggap mahal: Cirebon-1 batal (2025), beralih ke phase down};
+\draw[arr] (a) -- (b); \draw[arr] (b) -- (c); \draw[arr] (c) -- (d); \draw[arr] (d) -- (e); \draw[arr] (e) -- (f);
+\end{tikzpicture}
+\caption{Rantai hambatan transisi PLTS atap dan pensiun dini PLTU}
+\label{fig:rantai}
+\sumber{disusun dari \textcite{B-TENGGARA-2024}, \textcite{P-IEEFA-2017}, dan \textcite{B-PETROMINDO-CIREBON-BATAL}}
+\end{figure}
+
+PLN membayar pembayaran kapasitas kepada pembangkit swasta (IPP) selama unit tersedia, terlepas dari listriknya dipakai atau tidak \parencite{P-IEEFA-2017}. Ketika listrik di Jawa-Bali berlebih, PLN menolak membayar penuh ekspor PLTS atap karena akan menaikkan biaya pokok penyediaan (BPP) yang ujungnya dibebankan ke subsidi \parencite{B-TENGGARA-2024}. Revisi aturan PLTS atap lewat Permen ESDM 2/2024 kemudian menghapus net metering dan menetapkan kuota per wilayah \parencite{R-PERMEN-ESDM-2-2024,B-TENGGARA-2024}. Di sisi PLTU, rencana pensiun dini Cirebon-1 yang didukung Asian Development Bank (ADB) dibatalkan pada Desember 2025. PLN menilai percepatan lima tahun memicu kewajiban kompensasi sekitar Rp60 triliun dan beralih ke pendekatan phase down, yaitu memensiunkan PLTU di akhir kontrak \parencite{B-PETROMINDO-CIREBON-BATAL,B-MONGABAY-202601}.
+
+Hambatan ini juga dikenal dalam literatur. Pensiun dini sebelum aset habis disusutkan menimbulkan aset terdampar \parencite{P-KEFFORD-2018}, sedangkan ruang fiskal dan akses pendanaan internasional Indonesia terbatas \parencite{P-RESOSUDARMO-2023}.
+
 \subsection{Pertanyaan Kajian}
+
+Kajian ini menjawab tiga pertanyaan proyek minor dengan fokus pada sistem Jawa-Bali dan Cirebon-1 sebagai kasus utama:
+\begin{enumerate}
+  \item Dampak apa yang ditimbulkan PLTU Jawa-Bali, dan siapa yang menanggungnya?
+  \item Apakah PLTS atap, pensiun dini, atau gabungan keduanya layak dari sisi PLN dan negara?
+  \item Inovasi apa yang dapat membantu pemerintah menyusun paket yang dapat diterima PLN?
+\end{enumerate}
+Tiga hipotesis diuji dengan model PowerShift (Bagian~\ref{sec:inovasi}). H1: PLTS atap tanpa pensiun PLTU memperburuk neraca PLN. H2: memasangkan PLTS atap dengan pensiun dini memperkecil kerugian itu bila kompensasi didanai pihak luar. H3: ada kombinasi kebijakan yang membuat neraca PLN mendekati netral.
