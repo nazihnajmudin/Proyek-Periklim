@@ -20,7 +20,11 @@ const KEYS = [
 
 function withParam(group, key, factor) {
   const data = JSON.parse(JSON.stringify(baseData));
-  data.params[group][key].value *= factor;
+  if (group === "plants") {
+    for (const u of data.plants) if (u[key]) u[key] *= factor;
+  } else {
+    data.params[group][key].value *= factor;
+  }
   return data;
 }
 
@@ -37,7 +41,7 @@ function sweep(presetKey) {
   return rows;
 }
 
-const all = sweep("paket").concat(sweep("seimbang"));
+const all = sweep("roadmap").concat(sweep("seimbang"));
 const header = Object.keys(all[0]);
 fs.mkdirSync(__dirname + "/results", { recursive: true });
 fs.writeFileSync(__dirname + "/results/sensitivity.csv",

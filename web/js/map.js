@@ -103,7 +103,7 @@ function addLegend(map) {
     div.innerHTML =
       "<b>PLTU</b><br>" +
       '<i style="background:var(--coal)"></i>Beroperasi<br>' +
-      '<i style="background:var(--early)"></i>Pensiun dini (paket)<br>' +
+      '<i style="background:var(--early)"></i>Pensiun dini (skenario)<br>' +
       '<i style="background:var(--coal-off)"></i>Pensiun sesuai baseline<br>' +
       "<b>PLTS atap per provinsi</b><br>" +
       PV_COLORS.map((c) => '<i class="sq" style="background:' + c + '"></i>').join("") +

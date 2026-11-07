@@ -21,15 +21,18 @@
   <main class="page">
     <h1>Metode</h1>
     <p>Model tahunan 2026-2040 untuk sistem Jawa-Bali. Semua angka keuangan adalah selisih terhadap baseline:
-       PLTU pensiun di akhir PPA atau umur desain, dan PLTS atap tumbuh mengikuti tren dengan aturan sekarang (tanpa nilai ekspor).</p>
+       PLTU pensiun di akhir PPA atau umur desain, dan PLTS atap tumbuh mengikuti tren dengan aturan sekarang (tanpa nilai ekspor).
+       Skenario mengikuti solusi terpilih laporan Kelompok 17, yaitu integrasi PLTS atap dan pensiun dini PLTU dengan roadmap empat fase.
+       Rincian kajiannya ada di dokumen kajian PowerShift.</p>
 
     <h2>1. PLTS atap</h2>
     <pre>hemat per kWp   = PVOUT x tarif x (porsi pakai sendiri + porsi ekspor x nilai ekspor)
-balik modal     = harga per kWp / hemat per kWp
+balik modal     = harga per kWp x (1 - insentif) / hemat per kWp      (insentif hanya segmen industri)
 pangsa pasar    = exp(-0,3 x balik modal)                 (Beck 2009, dipakai NREL)
 tambahan pasar  = tren x porsi segmen x pangsa(skenario) / pangsa(aturan sekarang)
 tambahan total  = pasar + gedung pemerintah + program 450/900 VA, dibatasi kuota</pre>
-    <p>Respons pasar naik bertahap selama 4 tahun. Program 450/900 VA dibiayai pengalihan subsidi: kapasitas = anggaran / harga borongan per kWp.
+    <p>Seluruh kebijakan PLTS atap berlaku sejak tahun mulai yang dipilih (roadmap: 2028). Sebelum itu PLTS atap mengikuti tren.
+       Respons pasar naik bertahap selama 4 tahun sejak kebijakan berlaku. Biaya insentif industri = insentif x tambahan PLTS atap industri x harga, ditanggung APBN. Program 450/900 VA dibiayai pengalihan subsidi: kapasitas = anggaran / harga borongan per kWp.
        PVOUT diambil dari Global Solar Atlas per kabupaten, lalu dirata-ratakan menurut penjualan listrik PLN per provinsi (Statistik PLN 2025).</p>
 
     <h2>2. PLTU</h2>
@@ -45,13 +48,15 @@ baseline        = akhir PPA (IPP, 30 tahun) atau umur desain (PLN, 40 tahun)</pr
              + pembayaran kapasitas IPP dihemat (atau O&amp;M tetap untuk PLTU PLN)
              - porsi PLN dari kompensasi pensiun dini
              - biaya pembangkit pengganti</pre>
-    <p>Kompensasi pensiun dini memakai dua pilihan: estimasi skema ETM (sekitar Rp1,1 miliar per MW per tahun dipercepat)
-       atau klaim PLN untuk Cirebon-1 (Rp60 T untuk lima tahun, sekitar Rp18 miliar per MW per tahun).
-       Untuk PLTU milik PLN, kompensasi berupa nilai buku yang hilang.</p>
+    <p>Kompensasi pensiun dini memakai tiga pilihan. Estimasi ETM (bawaan) sekitar Rp1,045 miliar per MW per tahun dipercepat untuk PLTU IPP,
+       dikalibrasi ke refinancing Cirebon-1 US$250-300 juta (Reuters 2022). Untuk PLTU PLN, kompensasi berupa nilai buku yang hilang.
+       Valuasi ETP memakai valuasi per PLTU dari Energy Transition Partnership (2023) yang dirangkum laporan kelompok, dibagi rata selama tahun percepatan.
+       Angka ini belum dicocokkan ke dokumen asli dan untuk Cirebon-1 lebih tinggi dari refinancing ADB, sehingga dipakai sebagai pembanding.
+       Klaim PLN untuk Cirebon-1 memakai Rp60 T untuk lima tahun, sekitar Rp18 miliar per MW per tahun.</p>
 
     <h2>4. APBN dan negara</h2>
     <pre>APBN   = penutupan selisih PLN + subsidi dihemat + tagihan gedung pemerintah dihemat
-         - investasi PLTS gedung pemerintah - anggaran program - porsi APBN kompensasi
+         - investasi PLTS gedung pemerintah - insentif industri - anggaran program - porsi APBN kompensasi
 negara = neraca PLN + bagian APBN di luar penutupan selisih PLN</pre>
     <p>Tarif ditetapkan pemerintah, jadi kerugian PLN diasumsikan ditutup APBN lewat subsidi dan kompensasi.
        Dana luar (ETM/JETP) dicatat terpisah, tidak masuk neraca negara.</p>
@@ -67,7 +72,16 @@ kematian dihindari = kematian unit pensiun - (energi pensiun - energi PLTS tamba
     <p>Kematian per GWh armada dari CREA dan IESR (2023): 10.500 kematian untuk 40,6 GW PLTU. Cirebon-1 memakai angka khusus CREA
        (6.370 kematian dihindari 2036-2042 jika pensiun 2035). Nilai kesehatan US$0,7 juta per kematian.</p>
 
-    <h2>7. Kriteria Permen ESDM 10/2025</h2>
+    <h2>7. Indikator roadmap</h2>
+    <p>Indikator mengikuti Tabel 5.6 laporan kelompok. Kesetaraan daya = tambahan PLTS atap 2040 terhadap baseline / kapasitas PLTU pensiun dini.
+       Kuota PLTS atap 2028 Jawa-Madura-Bali 1,85 GW dari kuota nasional 2 GW (ESDM). Target pensiun dini dan alokasi dana memakai CIPP JETP (1,7 GW, US$1,3 miliar, cakupan dana perlu dicek).
+       Fase roadmap: 1 (2026-2027), 2 (2028-2030), 3 (2031-2035), 4 (2036-2040).</p>
+
+    <h2>8. Penyaringan kandidat</h2>
+    <p>Setiap PLTU dijalankan sendiri pada tahun pilihan dengan pendanaan dan kompensasi skenario aktif, mencakup semua unit yang belum pensiun di baseline.
+       Hasilnya selisih neraca negara terhadap baseline, dibagi kapasitas (Rp per GW), lalu diurutkan dari yang terbesar.</p>
+
+    <h2>9. Kriteria Permen ESDM 10/2025</h2>
     <p>Tujuh kriteria Pasal 11 ayat (1) dan tiga pertimbangan ayat (2) dinilai secara indikatif dari hasil model.
        Ambang (usia 15 tahun, dana luar 50 persen, reserve margin 33 persen, kenaikan BPP 10 Rp/kWh) adalah asumsi tim.</p>
 
@@ -77,13 +91,16 @@ kematian dihindari = kematian unit pensiun - (energi pensiun - energi PLTS tamba
       <li>Kontrak IPP tidak publik. Pembayaran kapasitas dan kompensasi memakai asumsi.</li>
       <li>Tidak ada simulasi dispatch per jam, aliran daya, atau stabilitas jaringan.</li>
       <li>Angka kesehatan berasal dari pemodelan CREA, bukan pengukuran langsung.</li>
+      <li>Valuasi ETP dihitung untuk tahun pensiun versi ETP dan belum diverifikasi ke dokumen asli. Dipakai hanya sebagai pembanding.</li>
+      <li>Kesetaraan daya PLTS atap tidak sama dengan kesetaraan energi. Energi PLTS atap tambahan hanya sekitar sepertiga energi PLTU yang dipensiunkan pada roadmap.</li>
       <li>Alokasi PLTS atap per provinsi mengikuti porsi penjualan listrik PLN, bukan potensi atap tiap provinsi.</li>
       <li>Selisih tarif dan BPP untuk golongan non subsidi (kompensasi tarif) tidak dihitung terpisah.</li>
     </ul>
 
     <h2>Validasi</h2>
-    <p>Hitung tangan Paket Cirebon-1 untuk 2030, 2035, dan 2040 dicocokkan dengan hasil aplikasi (selisih di bawah 0,01 persen).
-       Uji kewajaran: baseline tanpa selisih, cadangan tahun dasar 34,9 persen. Uji arah: nilai ekspor naik menaikkan PLTS atap dan menurunkan neraca PLN.</p>
+    <p>Hitung tangan skenario Cirebon-1 2035 dengan dorongan PLTS atap untuk 2030, 2035, dan 2040 dicocokkan dengan hasil aplikasi (selisih di bawah 0,01 persen).
+       Uji kewajaran: baseline tanpa selisih, cadangan tahun dasar 34,9 persen, kompensasi ETP sama dengan valuasi dibagi rata.
+       Uji arah: nilai ekspor naik menaikkan PLTS atap dan menurunkan neraca PLN, insentif industri menaikkan PLTS atap dan menurunkan APBN, kebijakan yang mulai lebih lambat menurunkan PLTS atap.</p>
   </main>
 </body>
 </html>

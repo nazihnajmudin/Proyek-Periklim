@@ -20,7 +20,10 @@
   "heat_rate_kcal_kwh": 2331,
   "deaths_yr": 170.7,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Adipala_power_station"
+  "wiki": "https://www.gem.wiki/Adipala_power_station",
+  "etp_name": "Adipala Unit 1",
+  "etp_cost_musd_yr": 105.4,
+  "etp_valuation_musd": 807.84
  },
  {
   "id": "G100000101261",
@@ -89,7 +92,10 @@
   "heat_rate_kcal_kwh": 2851,
   "deaths_yr": 36.7,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Celukan_Bawang_power_station"
+  "wiki": "https://www.gem.wiki/Celukan_Bawang_power_station",
+  "etp_name": "Celukan Bawang Unit 1-3",
+  "etp_cost_musd_yr": 85.733,
+  "etp_valuation_musd": 190.0
  },
  {
   "id": "G100000101255",
@@ -112,7 +118,10 @@
   "heat_rate_kcal_kwh": 2851,
   "deaths_yr": 36.7,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Celukan_Bawang_power_station"
+  "wiki": "https://www.gem.wiki/Celukan_Bawang_power_station",
+  "etp_name": "Celukan Bawang Unit 1-3",
+  "etp_cost_musd_yr": 85.733,
+  "etp_valuation_musd": 190.0
  },
  {
   "id": "G100000101256",
@@ -135,7 +144,10 @@
   "heat_rate_kcal_kwh": 2851,
   "deaths_yr": 36.7,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Celukan_Bawang_power_station"
+  "wiki": "https://www.gem.wiki/Celukan_Bawang_power_station",
+  "etp_name": "Celukan Bawang Unit 1-3",
+  "etp_cost_musd_yr": 85.733,
+  "etp_valuation_musd": 190.0
  },
  {
   "id": "G100000101586",
@@ -158,7 +170,10 @@
   "heat_rate_kcal_kwh": 2851,
   "deaths_yr": 77.6,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Cilacap_Sumber_power_station"
+  "wiki": "https://www.gem.wiki/Cilacap_Sumber_power_station",
+  "etp_name": "Cilacap Unit 1-2",
+  "etp_cost_musd_yr": 97.99,
+  "etp_valuation_musd": 337.33
  },
  {
   "id": "G100000101587",
@@ -181,7 +196,10 @@
   "heat_rate_kcal_kwh": 2851,
   "deaths_yr": 77.6,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Cilacap_Sumber_power_station"
+  "wiki": "https://www.gem.wiki/Cilacap_Sumber_power_station",
+  "etp_name": "Cilacap Unit 1-2",
+  "etp_cost_musd_yr": 97.99,
+  "etp_valuation_musd": 337.33
  },
  {
   "id": "G100000101588",
@@ -250,7 +268,10 @@
   "heat_rate_kcal_kwh": 2331,
   "deaths_yr": 910.0,
   "health_src": "B-ECOBUSINESS-CIREBON",
-  "wiki": "https://www.gem.wiki/Cirebon_power_station"
+  "wiki": "https://www.gem.wiki/Cirebon_power_station",
+  "etp_name": "Cirebon Unit 1",
+  "etp_cost_musd_yr": 56.58,
+  "etp_valuation_musd": 622.29
  },
  {
   "id": "G100000101591",
@@ -296,7 +317,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 85.3,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Indramayu_power_station"
+  "wiki": "https://www.gem.wiki/Indramayu_power_station",
+  "etp_name": "Indramayu Unit 1-3",
+  "etp_cost_musd_yr": 6.747,
+  "etp_valuation_musd": 145.2
  },
  {
   "id": "G100000104853",
@@ -319,7 +343,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 85.3,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Indramayu_power_station"
+  "wiki": "https://www.gem.wiki/Indramayu_power_station",
+  "etp_name": "Indramayu Unit 1-3",
+  "etp_cost_musd_yr": 6.747,
+  "etp_valuation_musd": 145.2
  },
  {
   "id": "G100000104854",
@@ -342,7 +369,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 85.3,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Indramayu_power_station"
+  "wiki": "https://www.gem.wiki/Indramayu_power_station",
+  "etp_name": "Indramayu Unit 1-3",
+  "etp_cost_musd_yr": 6.747,
+  "etp_valuation_musd": 145.2
  },
  {
   "id": "G100000104986",
@@ -411,7 +441,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 77.6,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Banten_Labuan_power_station"
+  "wiki": "https://www.gem.wiki/Banten_Labuan_power_station",
+  "etp_name": "Labuan Unit 1-2",
+  "etp_cost_musd_yr": 54.375,
+  "etp_valuation_musd": 333.48
  },
  {
   "id": "G100000100531",
@@ -434,7 +467,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 77.6,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Banten_Labuan_power_station"
+  "wiki": "https://www.gem.wiki/Banten_Labuan_power_station",
+  "etp_name": "Labuan Unit 1-2",
+  "etp_cost_musd_yr": 54.375,
+  "etp_valuation_musd": 333.48
  },
  {
   "id": "G100000100532",
@@ -457,7 +493,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 81.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Banten_Lontar_power_station"
+  "wiki": "https://www.gem.wiki/Banten_Lontar_power_station",
+  "etp_name": "Lontar Unit 1-3",
+  "etp_cost_musd_yr": 44.98,
+  "etp_valuation_musd": 343.2
  },
  {
   "id": "G100000100533",
@@ -480,7 +519,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 81.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Banten_Lontar_power_station"
+  "wiki": "https://www.gem.wiki/Banten_Lontar_power_station",
+  "etp_name": "Lontar Unit 1-3",
+  "etp_cost_musd_yr": 44.98,
+  "etp_valuation_musd": 343.2
  },
  {
   "id": "G100000100534",
@@ -503,7 +545,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 81.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Banten_Lontar_power_station"
+  "wiki": "https://www.gem.wiki/Banten_Lontar_power_station",
+  "etp_name": "Lontar Unit 1-3",
+  "etp_cost_musd_yr": 44.98,
+  "etp_valuation_musd": 343.2
  },
  {
   "id": "G100000100535",
@@ -549,7 +594,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 81.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Pacitan_power_station"
+  "wiki": "https://www.gem.wiki/Pacitan_power_station",
+  "etp_name": "Pacitan Unit 1-2",
+  "etp_cost_musd_yr": 61.635,
+  "etp_valuation_musd": 378.0
  },
  {
   "id": "G100000107721",
@@ -572,7 +620,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 81.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Pacitan_power_station"
+  "wiki": "https://www.gem.wiki/Pacitan_power_station",
+  "etp_name": "Pacitan Unit 1-2",
+  "etp_cost_musd_yr": 61.635,
+  "etp_valuation_musd": 378.0
  },
  {
   "id": "G100000108040",
@@ -641,7 +692,10 @@
   "heat_rate_kcal_kwh": 2412,
   "deaths_yr": 170.7,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/PLN_Paiton_Baru_power_station"
+  "wiki": "https://www.gem.wiki/PLN_Paiton_Baru_power_station",
+  "etp_name": "Paiton Unit 9",
+  "etp_cost_musd_yr": 71.89,
+  "etp_valuation_musd": 663.77
  },
  {
   "id": "G100000107730",
@@ -779,7 +833,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 90.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Pelabuhan_Ratu_power_station"
+  "wiki": "https://www.gem.wiki/Pelabuhan_Ratu_power_station",
+  "etp_name": "Pelabuhan Ratu Unit 1-3",
+  "etp_cost_musd_yr": 15.89,
+  "etp_valuation_musd": 267.83
  },
  {
   "id": "G100000107918",
@@ -802,7 +859,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 90.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Pelabuhan_Ratu_power_station"
+  "wiki": "https://www.gem.wiki/Pelabuhan_Ratu_power_station",
+  "etp_name": "Pelabuhan Ratu Unit 1-3",
+  "etp_cost_musd_yr": 15.89,
+  "etp_valuation_musd": 267.83
  },
  {
   "id": "G100000107919",
@@ -825,7 +885,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 90.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Pelabuhan_Ratu_power_station"
+  "wiki": "https://www.gem.wiki/Pelabuhan_Ratu_power_station",
+  "etp_name": "Pelabuhan Ratu Unit 1-3",
+  "etp_cost_musd_yr": 15.89,
+  "etp_valuation_musd": 267.83
  },
  {
   "id": "G100000108526",
@@ -848,7 +911,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 81.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Rembang_power_station"
+  "wiki": "https://www.gem.wiki/Rembang_power_station",
+  "etp_name": "Rembang Unit 1-2",
+  "etp_cost_musd_yr": 43.595,
+  "etp_valuation_musd": 332.64
  },
  {
   "id": "G100000108527",
@@ -871,7 +937,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 81.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Rembang_power_station"
+  "wiki": "https://www.gem.wiki/Rembang_power_station",
+  "etp_name": "Rembang Unit 1-2",
+  "etp_cost_musd_yr": 43.595,
+  "etp_valuation_musd": 332.64
  },
  {
   "id": "G100000100536",
@@ -1078,7 +1147,10 @@
   "heat_rate_kcal_kwh": 2412,
   "deaths_yr": 161.6,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Banten_Suralaya_power_station"
+  "wiki": "https://www.gem.wiki/Banten_Suralaya_power_station",
+  "etp_name": "Suralaya Unit 8",
+  "etp_cost_musd_yr": 162.66,
+  "etp_valuation_musd": 770.0
  },
  {
   "id": "G100000100538",
@@ -1147,7 +1219,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 90.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Tanjung_Awar-Awar_power_station"
+  "wiki": "https://www.gem.wiki/Tanjung_Awar-Awar_power_station",
+  "etp_name": "Tanjung Awar-Awar Unit 1-2",
+  "etp_cost_musd_yr": 32.82,
+  "etp_valuation_musd": 359.33
  },
  {
   "id": "G100000109947",
@@ -1170,7 +1245,10 @@
   "heat_rate_kcal_kwh": 2632,
   "deaths_yr": 90.5,
   "health_src": "P-CREA-IESR-2023",
-  "wiki": "https://www.gem.wiki/Tanjung_Awar-Awar_power_station"
+  "wiki": "https://www.gem.wiki/Tanjung_Awar-Awar_power_station",
+  "etp_name": "Tanjung Awar-Awar Unit 1-2",
+  "etp_cost_musd_yr": 32.82,
+  "etp_valuation_musd": 359.33
  },
  {
   "id": "G100000109960",

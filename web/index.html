@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PowerShift</title>
-  <meta name="description" content="Simulator paket pensiun dini PLTU dan PLTS atap untuk sistem listrik Jawa-Bali">
+  <meta name="description" content="Simulator integrasi PLTS atap dan pensiun dini PLTU untuk sistem listrik Jawa-Bali">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,7 +12,7 @@
   <header class="top">
     <div class="brand">
       <span class="logo">PowerShift</span>
-      <span class="tagline">Paket pensiun dini PLTU + PLTS atap, sistem Jawa-Bali</span>
+      <span class="tagline">Integrasi PLTS atap dan pensiun dini PLTU, sistem Jawa-Bali</span>
     </div>
     <nav>
       <a href="index.html" class="active">Simulator</a>
@@ -26,7 +26,7 @@
   <main class="layout">
     <aside class="panel" id="panel">
       <section>
-        <h2>Preset</h2>
+        <h2>Skenario roadmap</h2>
         <select id="preset"></select>
         <p class="hint" id="preset-note"></p>
       </section>
@@ -38,6 +38,7 @@
         <div class="radio-row">
           <span>Kompensasi:</span>
           <label><input type="radio" name="comp" value="etm" checked> Estimasi ETM</label>
+          <label><input type="radio" name="comp" value="etp"> Valuasi ETP</label>
           <label><input type="radio" name="comp" value="pln"> Klaim PLN</label>
         </div>
         <label class="slider">Dana luar (ETM/JETP) <b id="v-ext"></b>
@@ -49,13 +50,17 @@
 
       <section>
         <h2>PLTS atap</h2>
+        <label class="slider">Gedung pemerintah dan BUMN (MW/tahun) <b id="v-gov"></b>
+          <input type="range" id="gov" min="0" max="500" step="10"></label>
+        <label class="slider">Insentif fiskal industri (% harga) <b id="v-incentive"></b>
+          <input type="range" id="incentive" min="0" max="50" step="5"></label>
+        <label class="slider">Kebijakan PLTS atap mulai <b id="v-pvfrom"></b>
+          <input type="range" id="pvfrom" min="2026" max="2032" step="1"></label>
         <label class="slider">Nilai ekspor ke PLN <b id="v-export"></b>
           <input type="range" id="export" min="0" max="100" step="5"></label>
         <p class="hint">0% = aturan sekarang (Permen ESDM 2/2024)</p>
         <label class="slider">Kuota Jawa-Bali (MW/tahun) <b id="v-quota"></b>
           <input type="range" id="quota" min="200" max="3000" step="50"></label>
-        <label class="slider">Gedung pemerintah (MW/tahun) <b id="v-gov"></b>
-          <input type="range" id="gov" min="0" max="500" step="10"></label>
         <label class="slider">Subsidi 450/900 VA dialihkan <b id="v-program"></b>
           <input type="range" id="program" min="0" max="30" step="1"></label>
       </section>
@@ -84,13 +89,30 @@
       </div>
 
       <div class="tabs">
-        <button data-tab="neraca" class="active">Neraca</button>
+        <button data-tab="roadmap" class="active">Indikator roadmap</button>
+        <button data-tab="kandidat">Kandidat PLTU</button>
+        <button data-tab="neraca">Neraca</button>
         <button data-tab="keandalan">Keandalan</button>
         <button data-tab="dampak">Dampak</button>
         <button data-tab="kriteria">Kriteria Permen 10/2025</button>
       </div>
 
-      <div class="tab-body" id="tab-neraca">
+      <div class="tab-body" id="tab-roadmap">
+        <p class="explain">Capaian skenario terhadap indikator keberhasilan laporan Kelompok 17 (Tabel 5.6) dan roadmap empat fase (Tabel 6.1).</p>
+        <div id="roadmap"></div>
+      </div>
+
+      <div class="tab-body hidden" id="tab-kandidat">
+        <div class="tab-head">
+          <p class="explain">Penyaring kandidat pensiun dini. Tiap PLTU dihitung seolah dipensiunkan sendiri pada tahun pilihan,
+             dengan asumsi kompensasi dan pendanaan dari panel kiri. Urutan dari dampak neraca negara per GW terbaik.</p>
+          <label class="inline">Tahun pensiun
+            <select id="cand-year"></select></label>
+        </div>
+        <div id="candidates"></div>
+      </div>
+
+      <div class="tab-body hidden" id="tab-neraca">
         <div class="tab-head">
           <p class="explain">Selisih terhadap baseline phase down di akhir PPA. Positif berarti lebih untung dari baseline.</p>
           <div class="toggle" id="ledger-toggle">

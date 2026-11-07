@@ -1,9 +1,9 @@
-"""Tabel laporan: data olahan + hasil validasi -> LaTeX di docs/tables"""
+"""Tabel dokumen kajian: data olahan + hasil validasi -> LaTeX di docs/kajian/tables"""
 import json
 import os
 import pandas as pd
 
-OUT = "docs/tables"
+OUT = "docs/kajian/tables"
 RESULTS = "validation/results"
 
 PROVINCE_NAMES = {
@@ -11,14 +11,15 @@ PROVINCE_NAMES = {
     "diy": "DI Yogyakarta", "jatim": "Jawa Timur", "bali": "Bali",
 }
 PRESET_LABELS = {
-    "pvonly": "PLTS atap saja", "retireonly": "Pensiun dini saja",
-    "paket": "Paket Cirebon-1", "seimbang": "Paket seimbang",
+    "roadmap_pv": "Komponen PLTS atap", "roadmap_retire": "Komponen pensiun dini",
+    "fase2": "Fase 1-2", "roadmap": "Roadmap Fase 1-3", "seimbang": "Varian seimbang",
 }
 STATUS = {"verified": "terverifikasi", "assumption": "asumsi", "perlu-cek": "perlu cek"}
 
 
 def num(x, digits=0):
     """angka -> format Indonesia (titik ribuan, koma desimal)"""
+    x = round(x + 1e-9 * (1 if x >= 0 else -1), digits)   # pembulatan setengah ke atas
     text = f"{x:,.{digits}f}"
     return text.replace(",", "X").replace(".", ",").replace("X", ".")
 
@@ -81,6 +82,7 @@ def preset_results():
         ("PLTS atap 2040 (GWp)", lambda s: num(s["pv_mwp_2040"] / 1000, 1)),
         ("Pembangkit pengganti (MW)", lambda s: num(s["replacement_mw_max"])),
         ("Kenaikan BPP maks. (Rp/kWh)", lambda s: num(max(s["bpp_delta_max"], 0), 1)),
+        ("Pekerja PLTU terdampak", lambda s: num(s["workers_affected"])),
     ]
     keys = list(PRESET_LABELS)
     body = "\\begin{tabular}{l" + "r" * len(keys) + "}\n\\toprule\nIndikator & " + \
@@ -91,8 +93,40 @@ def preset_results():
     write("preset", body)
 
 
+def roadmap_kpis():
+    """capaian indikator laporan kelompok per skenario roadmap"""
+    df = pd.read_csv(f"{RESULTS}/preset_summary.csv").set_index("preset")
+    keys = ["fase2", "roadmap", "seimbang"]
+    rows = [
+        ("PLTU pensiun dini (GW)", lambda s: num(s["kpi_retired_gw"], 2)),
+        ("Tambahan PLTS atap 2040 (GWp)", lambda s: num(s["kpi_pv_added_mwp"] / 1000, 2)),
+        ("Rasio PLTS atap terhadap PLTU", lambda s: num(100 * s["kpi_pv_added_mwp"] / 1000 / s["kpi_retired_gw"]) + "\\%"),
+        ("PLTS atap Jawa-Bali 2028 (MWp)", lambda s: num(s["pv_mwp_2028"])),
+        ("Kuota Jawa-Madura-Bali 2028 (MWp)", lambda s: num(s["kpi_pv_target_2028"])),
+        ("Dana luar (Rp T)", lambda s: num(s["ext_rp"] / 1e12, 1)),
+        ("Alokasi pensiun dini CIPP JETP (Rp T)", lambda s: num(s["kpi_jetp_fund_rp"] / 1e12, 1)),
+        ("Neraca negara (Rp T)", lambda s: num(s["state_rp"] / 1e12, 1)),
+    ]
+    body = "\\begin{tabular}{lrrr}\n\\toprule\nIndikator & " + " & ".join(PRESET_LABELS[k] for k in keys) + " \\\\\n\\midrule\n"
+    for label, fn in rows:
+        body += label + " & " + " & ".join(fn(df.loc[k]) for k in keys) + " \\\\\n"
+    body += "\\bottomrule\n\\end{tabular}\n"
+    write("kpi_roadmap", body)
+
+
+def candidates():
+    """daftar urut kandidat pensiun dini 2031 (penyaring PowerShift)"""
+    df = pd.read_csv(f"{RESULTS}/candidates_2031.csv")
+    body = "\\begin{tabular}{rllrrrrrr}\n\\toprule\n\\# & PLTU & Pemilik & MW & Pensiun baseline & Neraca negara (Rp T) & Per GW (Rp T) & Dana luar (Rp T) & Kematian/tahun \\\\\n\\midrule\n"
+    for i, r in enumerate(df.itertuples(), 1):
+        body += f"{i} & {tex(r.plant)} & {r.type} & {num(r.mw)} & {r.retireBase} & {num(r.stateRp / 1e12, 1)} & " \
+                f"{num(r.statePerGw / 1e12, 1)} & {num(r.extRp / 1e12, 1)} & {num(r.deathsYr)} \\\\\n"
+    body += "\\bottomrule\n\\end{tabular}\n"
+    write("kandidat", body)
+
+
 def hand_calculation():
-    """hitung tangan Paket Cirebon-1"""
+    """hitung tangan Cirebon-1 2035 + dorongan PLTS atap"""
     rows = json.load(open(f"{RESULTS}/cirebon1_manual.json"))
     items = [
         ("Kapasitas PLTS atap (MWp)", "pv_mwp", 1, 0),
@@ -117,7 +151,7 @@ def assumptions():
     params = json.load(open("data/manual/parameters.json"))
     body = "\\begin{longtable}{p{0.33\\textwidth} p{0.2\\textwidth} p{0.26\\textwidth} p{0.11\\textwidth}}\n\\toprule\n" \
            "Parameter & Nilai & Sumber & Status \\\\\n\\midrule\n\\endhead\n"
-    for group in ["system", "coal", "health", "pv", "subsidy"]:
+    for group in ["system", "coal", "health", "pv", "subsidy", "kpi"]:
         for key, p in params[group].items():
             if key == "segments":
                 for s in p.values():
@@ -146,6 +180,8 @@ if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     plants_by_province()
     preset_results()
+    roadmap_kpis()
+    candidates()
     hand_calculation()
     assumptions()
     unit_list()

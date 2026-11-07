@@ -8,6 +8,7 @@ const App = {
   baseResult: null,
   year: 2026,
   ledger: "pln",
+  tab: "roadmap",
   timer: null,
 };
 
@@ -35,6 +36,8 @@ function recompute(light) {
   updateMap(App.data, App.result, App.year);
   updateCharts(App.result, App.ledger, App.data.params, App.data.params.system.rm_threshold.value);
   renderCriteria(App.data, App.scenario, App.result);
+  renderRoadmap(App.data, App.scenario, App.result);
+  if (App.tab === "kandidat") showCandidates();
   if (!light) renderRetireList(App.data, App.scenario, recompute);
   syncControls(App.scenario);
 }
@@ -48,6 +51,19 @@ function applyPreset(key) {
 
 function markCustom() {
   document.getElementById("preset-note").textContent = "Skenario disesuaikan.";
+}
+
+// Candidate Screening
+
+function showCandidates() {
+  const year = Number(document.getElementById("cand-year").value);
+  renderCandidates(App.data, App.scenario, year, (plant, y) => {
+    for (const u of App.data.plants) {
+      if (u.plant === plant && u.retire_base > y + 1) App.scenario.retire[u.id] = y;
+    }
+    markCustom();
+    recompute();
+  });
 }
 
 // Plant Selection
@@ -94,6 +110,8 @@ function bindControls() {
   slide("quota", (v) => (App.scenario.quotaMw = v));
   slide("gov", (v) => (App.scenario.govMw = v));
   slide("program", (v) => (App.scenario.programShare = v / 100));
+  slide("incentive", (v) => (App.scenario.industryIncentive = v / 100));
+  slide("pvfrom", (v) => (App.scenario.pvFrom = v));
   slide("fund-ext", (v) => {
     const f = App.scenario.fund;
     f.ext = v / 100;
@@ -129,6 +147,11 @@ function bindControls() {
       () => (msg.textContent = "Salin link dari address bar."));
   };
 
+  // Candidate Year
+  const candYear = document.getElementById("cand-year");
+  for (let y = 2028; y <= 2038; y++) candYear.add(new Option(String(y), String(y), y === 2031, y === 2031));
+  candYear.onchange = showCandidates;
+
   // Year Slider
   const yearInput = document.getElementById("year");
   yearInput.oninput = () => setYear(Number(yearInput.value));
@@ -141,6 +164,8 @@ function bindControls() {
       document.querySelectorAll(".tab-body").forEach((b) => b.classList.add("hidden"));
       btn.classList.add("active");
       document.getElementById("tab-" + btn.dataset.tab).classList.remove("hidden");
+      App.tab = btn.dataset.tab;
+      if (App.tab === "kandidat") showCandidates();
     };
   }
   for (const btn of document.querySelectorAll("#ledger-toggle button")) {
@@ -197,7 +222,7 @@ async function start() {
     document.getElementById("preset-note").textContent = "Skenario dari link.";
     recompute();
   } else {
-    applyPreset("paket");
+    applyPreset("roadmap");
   }
 }
 

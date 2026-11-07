@@ -170,3 +170,9 @@ button.primary { background: var(--accent); color: #fff; border-color: var(--acc
 .guide .steps li { margin-bottom: 6px; }
 .guide .toc { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
 .guide .toc a { text-decoration: none; }
+
+/* Candidate Tab */
+label.inline { display: flex; align-items: center; gap: 6px; font-size: 13px; white-space: nowrap; }
+label.inline select { width: auto; }
+#candidates button { padding: 2px 8px; font-size: 12px; }
+#candidates { overflow-x: auto; }

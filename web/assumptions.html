@@ -39,6 +39,7 @@
       pv: "PLTS atap",
       subsidy: "Subsidi",
       population_m: "Penduduk (alokasi provinsi)",
+      kpi: "Target indikator roadmap",
     };
     const STATUS = { verified: "terverifikasi", assumption: "asumsi", "perlu-cek": "perlu cek" };
 
@@ -75,11 +76,12 @@
       document.getElementById("tables").innerHTML = html;
 
       const plants = await (await fetch("data/plants.json")).json();
-      let t = "<table><tr><th>PLTU</th><th>Unit</th><th>MW</th><th>Mulai</th><th>Tipe</th><th>Pensiun baseline</th><th>Sumber tahun pensiun</th><th>tCO2/MWh</th><th>Kematian/tahun</th></tr>";
+      let t = "<table><tr><th>PLTU</th><th>Unit</th><th>MW</th><th>Mulai</th><th>Tipe</th><th>Pensiun baseline</th><th>Sumber tahun pensiun</th><th>tCO2/MWh</th><th>Kematian/tahun</th><th>Valuasi ETP (US$ juta)</th></tr>";
       for (const u of plants) {
         t += "<tr><td>" + u.plant + "</td><td>" + u.unit + "</td><td>" + fmtNum(u.mw, 0) + "</td><td>" + u.start +
              "</td><td>" + u.type + "</td><td>" + u.retire_base + "</td><td><code>" + u.retire_src + "</code></td><td>" +
-             fmtNum(u.ef_t_mwh, 2) + "</td><td>" + fmtNum(u.deaths_yr, 0) + "</td></tr>";
+             fmtNum(u.ef_t_mwh, 2) + "</td><td>" + fmtNum(u.deaths_yr, 0) + "</td><td>" +
+             (u.etp_valuation_musd ? fmtNum(u.etp_valuation_musd, 1) : "-") + "</td></tr>";
       }
       document.getElementById("plants").innerHTML = t + "</table>";
     }

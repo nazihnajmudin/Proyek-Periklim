@@ -11,7 +11,7 @@ PORT = 8790
 SCALE = 1.5
 CHROMIUM = os.environ.get("CHROMIUM_PATH")   # opsional, jika versi Playwright tidak cocok
 RED = (214, 40, 40)
-REPORT_FIGURE = "docs/figures/app_powershift.png"
+REPORT_FIGURE = "docs/kajian/figures/app_powershift.png"
 
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
@@ -99,34 +99,48 @@ def capture():
 
         # Rooftop Solar Policy
         page.locator("#program").scroll_into_view_if_needed()
-        annotate(page, "05-plts-atap", ["label:has(#export)", "label:has(#quota)", "label:has(#gov)", "label:has(#program)"])
+        annotate(page, "05-plts-atap", ["label:has(#gov)", "label:has(#incentive)", "label:has(#pvfrom)",
+                                        "label:has(#export)", "label:has(#quota)", "label:has(#program)"])
 
         # Map and Year Slider
         page.evaluate("() => window.scrollTo(0, 0)")
         page.wait_for_timeout(300)
         annotate(page, "06-peta", [".map-controls", ".map-layers", ".legend"], crop=False)
 
-        # Results Tabs
-        page.evaluate("() => window.scrollTo(0, document.querySelector('.tabs').getBoundingClientRect().top + window.scrollY - 330)")
+        # Roadmap Indicators Tab
+        page.evaluate("() => window.scrollTo(0, document.querySelector('.tabs').getBoundingClientRect().top + window.scrollY - 60)")
         page.wait_for_timeout(500)
-        annotate(page, "07-neraca", [".tabs", "#ledger-toggle", ".chart-actions"], crop=False)
+        annotate(page, "07-indikator", ["#roadmap table >> nth=0", "#roadmap h3"], pad=60)
+
+        # Candidate Tab
+        page.click("button[data-tab=kandidat]")
+        page.wait_for_timeout(1500)
+        page.evaluate("() => window.scrollTo(0, document.querySelector('.tabs').getBoundingClientRect().top + window.scrollY - 60)")
+        page.wait_for_timeout(400)
+        annotate(page, "08-kandidat", ["#cand-year", "#candidates table tr >> nth=1", "#candidates button >> nth=0"], pad=60)
+
+        # Ledger Tab
+        page.click("button[data-tab=neraca]")
+        page.evaluate("() => window.scrollTo(0, document.querySelector('.tabs').getBoundingClientRect().top + window.scrollY - 330)")
+        page.wait_for_timeout(700)
+        annotate(page, "09-neraca", [".tabs", "#ledger-toggle", ".chart-actions"], crop=False)
 
         # Criteria Tab
         page.click("button[data-tab=kriteria]")
         page.wait_for_timeout(400)
         page.locator("#criteria").scroll_into_view_if_needed()
-        annotate(page, "08-kriteria", ["#criteria h3 >> nth=0", "#criteria h3 >> nth=1"], pad=120)
+        annotate(page, "10-kriteria", ["#criteria h3 >> nth=0", "#criteria h3 >> nth=1"], pad=120)
 
         # Share
         page.evaluate("() => window.scrollTo(0, 0)")
         page.locator("#share").scroll_into_view_if_needed()
-        annotate(page, "09-bagikan", ["#share", "#reset"])
+        annotate(page, "11-bagikan", ["#share", "#reset"])
 
         # Report Figure
         page.goto(f"http://localhost:{PORT}/index.html")
         page.wait_for_timeout(4000)
-        page.select_option("#preset", "seimbang")
-        page.fill("#year", "2032")
+        page.select_option("#preset", "roadmap")
+        page.fill("#year", "2033")
         page.dispatch_event("#year", "input")
         page.wait_for_timeout(2500)
         page.screenshot(path=REPORT_FIGURE, clip={"x": 0, "y": 0, "width": 1440, "height": 760})

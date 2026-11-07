@@ -14,6 +14,8 @@ function scenarioToUrl(sc) {
   p.set("q", sc.quotaMw);
   p.set("g", sc.govMw);
   p.set("s", Math.round(sc.programShare * 100));
+  p.set("i", Math.round(sc.industryIncentive * 100));
+  p.set("y", sc.pvFrom);
   p.set("c", sc.compMode);
   p.set("fe", Math.round(sc.fund.ext * 100));
   p.set("fa", Math.round(sc.fund.apbn * 100));
@@ -35,7 +37,9 @@ function scenarioFromUrl(base) {
   sc.quotaMw = Number(p.get("q"));
   sc.govMw = Number(p.get("g"));
   sc.programShare = Number(p.get("s")) / 100;
-  sc.compMode = p.get("c") === "pln" ? "pln" : "etm";
+  sc.industryIncentive = Number(p.get("i") || 0) / 100;
+  sc.pvFrom = Number(p.get("y") || base.pvFrom);
+  sc.compMode = ["etp", "etm", "pln"].includes(p.get("c")) ? p.get("c") : "etm";
   const ext = Number(p.get("fe")) / 100;
   const apbn = Math.min(Number(p.get("fa")) / 100, 1 - ext);
   sc.fund = { ext: ext, apbn: apbn, pln: 1 - ext - apbn };
@@ -99,6 +103,8 @@ function syncControls(sc) {
   set("quota", sc.quotaMw, fmtNum(sc.quotaMw, 0));
   set("gov", sc.govMw, fmtNum(sc.govMw, 0));
   set("program", Math.round(sc.programShare * 100), Math.round(sc.programShare * 100) + "%");
+  set("incentive", Math.round(sc.industryIncentive * 100), Math.round(sc.industryIncentive * 100) + "%");
+  set("pvfrom", sc.pvFrom, String(sc.pvFrom));
   set("fund-ext", Math.round(sc.fund.ext * 100), Math.round(sc.fund.ext * 100) + "%");
   set("fund-apbn", Math.round(sc.fund.apbn * 100), Math.round(sc.fund.apbn * 100) + "%");
   document.getElementById("v-pln").textContent = Math.round(sc.fund.pln * 100) + "%";
@@ -182,6 +188,77 @@ function renderCriteria(data, sc, result) {
     '<table class="criteria"><tr><th>Kriteria</th><th>Penilaian</th></tr>' +
     rows.map((r) => "<tr><td>" + r[0] + "</td>" + cell(r[1], r[2]) + "</tr>").join("") + "</table>";
   box.innerHTML = html;
+}
+
+// Roadmap Indicators
+
+function renderRoadmap(data, sc, result) {
+  /* indikator laporan kelompok (Tabel 5.6) -> tabel capaian skenario */
+  const k = roadmapKpis(data, sc, result);
+  const cell = (level, text) => '<td><span class="status ' + level + '">' +
+    { ok: "Tercapai", mid: "Sebagian", no: "Belum", info: "Informasi" }[level] + "</span><br>" + text + "</td>";
+  const ratio = k.retiredGw > 0 ? k.pvAdded / 1000 / k.retiredGw : null;
+  const rows = [
+    ["PLTS atap setara daya PLTU yang dipensiunkan",
+     ratio === null ? "info" : ratio >= 1 ? "ok" : ratio >= 0.5 ? "mid" : "no",
+     "Tambahan PLTS atap 2040 " + fmtNum(k.pvAdded / 1000, 2) + " GWp, PLTU pensiun dini " + fmtNum(k.retiredGw, 2) + " GW" +
+     (ratio === null ? "" : " (" + fmtPct(ratio, 0) + ")")],
+    ["PLTS atap Jawa-Bali 2028",
+     k.pv2028 >= k.pvTarget2028 ? "ok" : k.pv2028 >= 0.8 * k.pvTarget2028 ? "mid" : "no",
+     fmtNum(k.pv2028, 0) + " MWp, kuota Jawa-Madura-Bali hingga 2028: " + fmtNum(k.pvTarget2028, 0) + " MWp"],
+    ["PLTU pensiun dini hingga 2040",
+     k.retiredGw >= k.retireTarget ? "ok" : k.retiredGw > 0 ? "mid" : "no",
+     fmtNum(k.retiredGw, 2) + " GW di Jawa-Bali, target JETP nasional " + fmtNum(k.retireTarget, 1) + " GW"],
+    ["Pembangkit pengganti siap sebelum penutupan",
+     k.replacementMw === 0 ? "ok" : "info",
+     k.replacementMw === 0 ? "Tidak dibutuhkan" : fmtNum(k.replacementMw, 0) + " MW harus beroperasi sebelum PLTU ditutup"],
+    ["Keseimbangan fiskal negara",
+     result.summary.state_rp >= 0 ? "ok" : result.summary.state_rp + result.summary.health_saved_rp >= 0 ? "mid" : "no",
+     "Neraca negara " + fmtRp(result.summary.state_rp) + ", kenaikan BPP maksimum " + fmtNum(Math.max(k.bppMax, 0), 1) + " Rp/kWh"],
+    ["Dana luar dibanding alokasi JETP",
+     k.extFund === 0 ? "info" : k.extFund <= k.jetpFund ? "ok" : "no",
+     "Kebutuhan " + fmtRp(k.extFund) + ", alokasi pensiun dini CIPP JETP sekitar " + fmtRp(k.jetpFund) + " (nasional, cakupan perlu dicek)"],
+    ["Pekerja terdampak tercakup program",
+     k.workers === 0 ? "info" : "mid",
+     fmtNum(k.workers, 0) + " pekerja PLTU perlu pelatihan ulang atau perlindungan sosial sebelum penutupan. " +
+     fmtNum(k.pvJobs, 0) + " job-year PLTS atap tambahan"],
+    ["Kematian dini dihindari", k.deaths > 0 ? "ok" : "info", fmtNum(k.deaths, 0) + " jiwa kumulatif 2026-2040"],
+  ];
+  let html = '<table class="criteria"><tr><th>Indikator</th><th>Capaian skenario</th></tr>' +
+    rows.map((r) => "<tr><td>" + r[0] + "</td>" + cell(r[1], r[2]) + "</tr>").join("") + "</table>";
+
+  // Phase Summary
+  html += '<h3>Ringkasan per fase roadmap</h3><table class="criteria"><tr><th>Fase</th><th>Tahun</th><th>PLTS atap akhir fase</th><th>PLTU pensiun dini</th><th>Neraca negara</th></tr>';
+  for (const ph of [1, 2, 3, 4]) {
+    const rows = result.rows.filter((r) => r.phase === ph);
+    if (rows.length === 0) continue;
+    const last = rows[rows.length - 1];
+    const state = rows.reduce((a, r) => a + r.state_rp, 0);
+    html += "<tr><td>" + PHASES[ph] + "</td><td>" + rows[0].year + "-" + last.year + "</td><td>" +
+      fmtNum(last.pv_mwp, 0) + " MWp</td><td>" + fmtNum(last.retired_mw, 0) + " MW</td><td>" + fmtSigned(fmtRp(state), state) + "</td></tr>";
+  }
+  document.getElementById("roadmap").innerHTML = html + "</table>";
+}
+
+// Candidate Table
+
+function renderCandidates(data, sc, year, onAdd) {
+  /* daftar urut kandidat pensiun dini untuk tahap penetapan kandidat roadmap */
+  const rows = rankCandidates(data, sc, year);
+  let html = '<table class="criteria"><tr><th>#</th><th>PLTU</th><th>Pemilik</th><th>MW</th><th>Usia</th><th>Pensiun baseline</th>' +
+    "<th>Neraca negara</th><th>Per GW</th><th>Dana luar</th><th>Kematian/tahun</th><th>Pekerja</th><th></th></tr>";
+  rows.forEach((r, i) => {
+    const chosen = data.plants.some((u) => u.plant === r.plant && sc.retire[u.id]);
+    html += "<tr><td>" + (i + 1) + "</td><td><b>" + r.plant + "</b>" + (r.etp ? ' <span class="tag">ETP</span>' : "") +
+      "</td><td>" + r.type + "</td><td>" + fmtNum(r.mw, 0) + "</td><td>" + r.age + "</td><td>" + r.retireBase + "</td><td>" +
+      fmtSigned(fmtRp(r.stateRp), r.stateRp) + "</td><td>" + fmtSigned(fmtRp(r.statePerGw), r.statePerGw) + "</td><td>" +
+      fmtRp(r.extRp) + "</td><td>" + fmtNum(r.deathsYr, 0) + "</td><td>" + fmtNum(r.workers, 0) + "</td><td>" +
+      (chosen ? "dipilih" : '<button data-plant="' + r.plant + '">Tambah</button>') + "</td></tr>";
+  });
+  const box = document.getElementById("candidates");
+  box.innerHTML = html + "</table>" +
+    '<p class="hint">Kematian/tahun adalah beban kesehatan unit saat beroperasi. ETP menandai PLTU yang masuk kajian Energy Transition Partnership.</p>';
+  for (const btn of box.querySelectorAll("button[data-plant]")) btn.onclick = () => onAdd(btn.dataset.plant, year);
 }
 
 // CSV Export

@@ -1,10 +1,11 @@
-"""Gambar laporan: data olahan + hasil validasi -> PNG di docs/figures"""
+"""Gambar dokumen kajian: data olahan + hasil validasi -> PNG di docs/kajian/figures"""
 import json
+import textwrap
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
 
-OUT = "docs/figures"
+OUT = "docs/kajian/figures"
 RESULTS = "validation/results"
 
 # Palette Slots (dataviz reference palette)
@@ -19,8 +20,8 @@ plt.rcParams.update({
 })
 
 PRESET_LABELS = {
-    "baseline": "Phase down PPA", "pvonly": "PLTS atap saja", "retireonly": "Pensiun dini saja",
-    "paket": "Paket Cirebon-1", "seimbang": "Paket seimbang",
+    "baseline": "Phase down PPA", "fase2": "Fase 1-2 percontohan", "roadmap": "Roadmap Fase 1-3",
+    "seimbang": "Varian fiskal seimbang", "roadmap_pv": "Komponen PLTS atap", "roadmap_retire": "Komponen pensiun dini",
 }
 
 
@@ -52,8 +53,8 @@ def map_plants():
 def preset_summary():
     """Neraca kumulatif per preset: PLN, negara, kesehatan"""
     df = pd.read_csv(f"{RESULTS}/preset_summary.csv")
-    df = df[df["preset"] != "baseline"]
-    labels = [PRESET_LABELS[p] for p in df["preset"]]
+    df = df[df["preset"].isin(["roadmap_pv", "roadmap_retire", "fase2", "roadmap", "seimbang"])]
+    labels = [textwrap.fill(PRESET_LABELS[p], 14) for p in df["preset"]]
     x = range(len(df))
     fig, ax = plt.subplots(figsize=(7.2, 3.0))
     w = 0.26
@@ -66,7 +67,7 @@ def preset_summary():
     ax.axhline(0, color=INK, linewidth=0.8)
     ax.set_xticks(list(x), labels)
     ax.set_ylabel("Rp triliun, kumulatif 2026-2040")
-    ax.set_ylim(-160, 170)
+    ax.set_ylim(-35, 130)
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.16), ncol=3, fontsize=7)
     save(fig, "neraca_preset")
 
@@ -100,13 +101,31 @@ def ledger_years(preset, name):
     save(fig, name)
 
 
+def substitution():
+    """Tambahan PLTS atap vs PLTU pensiun dini per tahun, roadmap lengkap"""
+    df = pd.read_csv(f"{RESULTS}/preset_roadmap.csv")
+    added = (df["pv_mwp"] - df["pv_mwp_base"]) / 1000
+    retired = df["retired_mw"] / 1000
+    fig, ax = plt.subplots(figsize=(7.2, 2.6))
+    for start, end in [(2028, 2030), (2031, 2035)]:
+        ax.axvspan(start - 0.5, end + 0.5, color=GRID, alpha=0.5, linewidth=0)
+    ax.text(2029, 3.3, "Fase 2", ha="center", fontsize=7, color=MUTED)
+    ax.text(2033, 3.3, "Fase 3", ha="center", fontsize=7, color=MUTED)
+    ax.plot(df["year"], added, color=AQUA, linewidth=2, marker="o", markersize=3, label="Tambahan PLTS atap vs baseline (GWp)")
+    ax.plot(df["year"], retired, color=ORANGE, linewidth=2, marker="o", markersize=3, label="PLTU pensiun dini (GW)")
+    ax.set_ylim(0, 3.6)
+    ax.set_ylabel("GW")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.2), ncol=2, fontsize=7)
+    save(fig, "substitusi_roadmap")
+
+
 def reserve_margin():
-    """Reserve margin baseline vs paket seimbang"""
-    df = pd.read_csv(f"{RESULTS}/preset_seimbang.csv")
+    """Reserve margin baseline vs roadmap lengkap"""
+    df = pd.read_csv(f"{RESULTS}/preset_roadmap.csv")
     fig, ax = plt.subplots(figsize=(7.2, 2.6))
     ax.plot(df["year"], df["rm_base"] * 100, color=VIOLET, linewidth=2, marker="o", markersize=3, label="Baseline")
     ax.plot(df["year"], df["rm_scn"] * 100, color=BLUE, linewidth=2, marker="o", markersize=3,
-            label="Paket seimbang, sebelum pembangkit pengganti")
+            label="Roadmap, sebelum pembangkit pengganti")
     ax.axhline(33, color=MUTED, linestyle="--", linewidth=1, label="Batas rekomendasi MKI 33%")
     ax.set_ylabel("Reserve margin (%)")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.2), ncol=3, fontsize=7)
@@ -114,9 +133,9 @@ def reserve_margin():
 
 
 def tornado():
-    """Sensitivitas neraca PLN paket seimbang"""
+    """Sensitivitas neraca PLN roadmap lengkap"""
     df = pd.read_csv(f"{RESULTS}/sensitivity.csv")
-    df = df[df["preset"] == "seimbang"].copy()
+    df = df[df["preset"] == "roadmap"].copy()
     df["span"] = (df["high_pln"] - df["low_pln"]).abs()
     df = df[df["span"] > 1e9].sort_values("span")
     ref = df["ref_pln"].iloc[0] / 1e12
@@ -129,14 +148,15 @@ def tornado():
     ax.axvline(ref, color=INK, linewidth=0.8)
     ax.set_xlabel("Neraca PLN kumulatif 2026-2040 (Rp triliun)")
     ax.legend(loc="lower right", fontsize=7)
-    save(fig, "tornado_seimbang")
+    save(fig, "tornado_roadmap")
 
 
 if __name__ == "__main__":
     map_plants()
     preset_summary()
-    ledger_years("paket", "neraca_paket_cirebon")
+    ledger_years("roadmap", "neraca_roadmap")
     ledger_years("seimbang", "neraca_seimbang")
+    substitution()
     reserve_margin()
     tornado()
     print("gambar tersimpan di", OUT)

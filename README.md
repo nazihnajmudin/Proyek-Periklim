@@ -1,9 +1,9 @@
 # PowerShift
 
-Simulator paket pensiun dini PLTU dan PLTS atap untuk sistem listrik Jawa-Bali, 2026-2040.
+Simulator integrasi PLTS atap dan pensiun dini PLTU untuk sistem listrik Jawa-Bali, 2026-2040.
 Proyek Minor MK4066 Perubahan Iklim (Layanan) ITB, Kelompok 17, topik 13: transisi energi, PLTS atap dan pensiun dini PLTU.
 
-PowerShift menghitung siapa menanggung apa dari sebuah paket kebijakan: neraca PLN, APBN, dana luar (ETM/JETP), pelanggan, keandalan sistem, emisi, dan kematian dini, dibanding baseline phase down di akhir PPA.
+PowerShift mendukung solusi terpilih laporan Kelompok 17, yaitu integrasi PLTS atap dan pensiun dini PLTU dengan roadmap empat fase. Platform dipakai sebagai alat hitung bersama dalam program tersebut: menyaring kandidat PLTU, menyusun paket, dan menghitung siapa menanggung apa dari tiap skenario roadmap: neraca PLN, APBN, dana luar (ETM/JETP), pelanggan, keandalan sistem, emisi, dan kematian dini, dibanding baseline phase down di akhir PPA, serta capaian indikator keberhasilan laporan kelompok.
 
 ## Isi Repo
 
@@ -11,11 +11,11 @@ PowerShift menghitung siapa menanggung apa dari sebuah paket kebijakan: neraca P
 | --- | --- |
 | `web/` | Aplikasi web statis (HTML, JavaScript, Leaflet, Chart.js). Bagian yang di-hosting |
 | `data/raw/` | Data asli: GEM (PLTU), geoBoundaries (batas wilayah), Global Solar Atlas (PVOUT per kabupaten) |
-| `data/manual/` | `parameters.json`: parameter model beserta sumber dan status verifikasi |
+| `data/manual/` | `parameters.json`: parameter model beserta sumber dan status verifikasi. `etp_retirement.csv`: valuasi pensiun dini ETP per PLTU Jawa-Bali |
 | `data/processed/` | Hasil olah: daftar PLTU, ringkasan provinsi, batas wilayah sederhana, ekstrak Statistik PLN 2025 |
 | `scripts/` | Skrip Python olah data, gambar dan tabel laporan, tangkapan layar panduan |
 | `validation/` | Hitung tangan, uji model, sensitivitas, eksplorasi kombinasi kebijakan, beserta hasilnya |
-| `docs/` | Laporan LaTeX (APA) dan PDF final `ProyekMinor_Kelompok-17.pdf` |
+| `docs/` | Dokumen kajian LaTeX (IEEE) yang menjadi dasar platform, laporan PowerShift versi awal (APA), dan PDF keduanya |
 
 ## Struktur
 
@@ -42,7 +42,9 @@ PowerShift menghitung siapa menanggung apa dari sebuah paket kebijakan: neraca P
 │   │   ├── gem/              Global Coal Plant Tracker, Integrated Power, Coal Finance
 │   │   ├── geoboundaries/    batas ADM1 dan ADM2 Indonesia
 │   │   └── gsa_api/          PVOUT per kabupaten
-│   ├── manual/parameters.json
+│   ├── manual/
+│   │   ├── parameters.json
+│   │   └── etp_retirement.csv
 │   └── processed/
 ├── scripts/
 │   ├── prepare_regions.py    batas wilayah Jawa-Bali
@@ -50,23 +52,21 @@ PowerShift menghitung siapa menanggung apa dari sebuah paket kebijakan: neraca P
 │   ├── prepare_plants.py     PLTU jaringan PLN Jawa-Bali dari GEM
 │   ├── prepare_pln.py        tabel Statistik PLN 2025
 │   ├── build_web_data.py     salin dan gabung data ke web/data
-│   ├── report_figures.py     gambar laporan
-│   ├── report_tables.py      tabel laporan
+│   ├── report_figures.py     gambar dokumen kajian
+│   ├── report_tables.py      tabel dokumen kajian
 │   └── guide_screenshots.py  tangkapan layar halaman panduan
 ├── validation/
-│   ├── cirebon1_manual.py    hitung tangan Paket Cirebon-1
+│   ├── cirebon1_manual.py    hitung tangan skenario Cirebon-1
 │   ├── test_model.js         uji model
 │   ├── sensitivity.js        sensitivitas parameter
 │   ├── explore_h3.js         eksplorasi kombinasi kebijakan
 │   └── results/
 ├── docs/
-│   ├── main.tex
-│   ├── sections/
-│   ├── tables/
-│   ├── figures/
-│   ├── references.bib
-│   ├── latexmkrc
-│   └── ProyekMinor_Kelompok-17.pdf
+│   ├── kajian/               dokumen kajian (IEEE): main.tex, sections/, tables/, figures/
+│   ├── laporan/              laporan PowerShift versi awal (APA), dibekukan
+│   ├── references.bib        pustaka bersama
+│   ├── Kajian-PowerShift-Kelompok17.pdf
+│   └── Laporan-PowerShift-Kelompok17.pdf
 ├── pyproject.toml
 └── uv.lock
 ```
@@ -86,7 +86,7 @@ Buka `http://localhost:8000`. Cara pakai ada di menu Panduan (`http://localhost:
 
 Tidak perlu untuk sekadar menjalankan aplikasi, karena hasilnya sudah ada di repo.
 
-Kebutuhan: [uv](https://docs.astral.sh/uv/), Node.js, `pdftotext` (poppler-utils), TeX Live dengan `latexmk`, `biber`, `biblatex-apa`.
+Kebutuhan: [uv](https://docs.astral.sh/uv/), Node.js, `pdftotext` (poppler-utils), TeX Live dengan `latexmk`, `biber`, `biblatex-ieee`, `biblatex-apa`.
 
 ```bash
 uv sync
@@ -104,15 +104,15 @@ node validation/test_model.js
 node validation/sensitivity.js
 node validation/explore_h3.js
 
-# Laporan
+# Dokumen kajian
 uv run python scripts/report_figures.py
 uv run python scripts/report_tables.py
-cd docs && latexmk
+cd docs/kajian && latexmk
 ```
 
-`latexmk` menghasilkan `docs/build/main.pdf`.
+`latexmk` menghasilkan `docs/kajian/build/main.pdf`. Laporan versi awal di `docs/laporan/` dibangun dengan cara yang sama dan memakai tabel serta gambarnya sendiri yang tidak lagi diperbarui skrip.
 
-Tangkapan layar panduan dan gambar aplikasi di laporan dibuat ulang dengan Playwright:
+Tangkapan layar panduan dan gambar aplikasi di dokumen kajian dibuat ulang dengan Playwright:
 
 ```bash
 uv run --with playwright python -m playwright install chromium
@@ -136,6 +136,7 @@ Laporan CREA hanya dipakai sebagai kutipan angka, tidak dibaca oleh skrip.
 - Potensi surya: Global Solar Atlas 2.0, World Bank Group, ESMAP, Solargis, CC BY 4.0.
 - Batas wilayah: geoBoundaries (Runfola et al., 2020). ADM1 ODbL 1.0, ADM2 CC BY 3.0 IGO.
 - Penjualan, pelanggan, tarif per provinsi: Statistik PLN 2025 (unaudited), dikutip.
+- Valuasi pensiun dini per PLTU: Energy Transition Partnership (2023), melalui laporan Kelompok 17, dikutip sebagai opsi pembanding.
 - Peta dasar: (c) OpenStreetMap contributors.
 - Library: Leaflet (BSD 2-Clause), Chart.js (MIT).
 

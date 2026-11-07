@@ -417,5 +417,39 @@
    "source": "B-BPS-BALI-2024",
    "status": "perlu-cek"
   }
+ },
+ "kpi": {
+  "pv_target_jb_mwp_2028": {
+   "value": 1850,
+   "unit": "MWp",
+   "label": "Kuota PLTS atap Jawa-Madura-Bali hingga 2028",
+   "source": "B-CNBC-ROOFTOP-2028",
+   "status": "verified",
+   "note": "ESDM: kuota nasional 2 GW hingga 2028, Jawa-Madura-Bali 1,85 GW (CNBC Indonesia, 4 November 2025)"
+  },
+  "retire_target_gw_2040": {
+   "value": 1.7,
+   "unit": "GW",
+   "label": "Target pensiun dini nasional hingga 2040 (CIPP JETP)",
+   "source": "P-JETP-CIPP-2023",
+   "status": "verified",
+   "note": "Dikonfirmasi tanggapan CREA atas CIPP. Angka nasional, bukan Jawa-Bali saja"
+  },
+  "jetp_retire_fund_usd": {
+   "value": 1300000000.0,
+   "unit": "US$",
+   "label": "Alokasi pensiun dini CIPP JETP",
+   "source": "P-JETP-CIPP-2023",
+   "status": "perlu-cek",
+   "note": "CREA menyebut untuk 1,7 GW, Katadata menyebut hingga 2030. Dipakai sebagai pembanding kasar"
+  },
+  "workers_coverage_target": {
+   "value": 1.0,
+   "unit": "fraksi",
+   "label": "Pekerja terdampak tercakup pelatihan ulang atau perlindungan sosial",
+   "source": "L-LAPORAN-K17",
+   "status": "assumption",
+   "note": "Target kebijakan dari Tabel 5.6 laporan kelompok"
+  }
  }
 }

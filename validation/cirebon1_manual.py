@@ -1,4 +1,4 @@
-"""Hitung tangan: preset Paket Cirebon-1 -> neraca PLN tahun 2030, 2035, 2040"""
+"""Hitung tangan: Cirebon-1 pensiun 2035 + dorongan PLTS atap (kompensasi ETM) -> neraca PLN 2030, 2035, 2040"""
 import json
 import math
 
