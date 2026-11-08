@@ -21,6 +21,7 @@ const COLORS = {
   single: "#2a78d6",
 };
 const SURFACE = "#ffffff";
+const SERIES = { pln: "#2a78d6", state: "#4a3aa7", health: "#1baf7a", low: "#2a78d6", high: "#eb6834" };
 
 function toT(x) {
   return x / 1e12;
@@ -77,6 +78,49 @@ function initCharts() {
   deathsOptions.plugins.legend.display = false;
   Charts.deaths = new Chart(document.getElementById("chart-deaths"), {
     type: "line", data: { labels: [], datasets: [] }, options: deathsOptions,
+  });
+
+  const subOptions = baseOptions("GW");
+  subOptions.scales.x.stacked = false;
+  subOptions.scales.y.stacked = false;
+  Charts.substitution = new Chart(document.getElementById("chart-substitution"), {
+    type: "line", data: { labels: [], datasets: [] }, options: subOptions,
+  });
+
+  const compareOptions = baseOptions("Rp triliun, kumulatif 2026-2040");
+  compareOptions.scales.x.stacked = false;
+  compareOptions.scales.y.stacked = false;
+  Charts.compare = new Chart(document.getElementById("chart-compare"), {
+    type: "bar", data: { labels: [], datasets: [] }, options: compareOptions,
+  });
+
+  const tornadoOptions = baseOptions("");
+  tornadoOptions.indexAxis = "y";
+  tornadoOptions.interaction = { mode: "nearest", intersect: true };
+  tornadoOptions.scales.x = { stacked: false, title: { display: true, text: "Rp triliun, kumulatif 2026-2040" } };
+  tornadoOptions.scales.y = { stacked: true, grid: { display: false } };
+  tornadoOptions.plugins.tooltip = {
+    callbacks: { label: (c) => c.dataset.label + ": " + fmtNum(c.raw[1], 1) + " T" },
+  };
+  Charts.tornado = new Chart(document.getElementById("chart-tornado"), {
+    type: "bar", data: { labels: [], datasets: [] }, options: tornadoOptions,
+    plugins: [{
+      id: "refLine",
+      afterDatasetsDraw(chart) {
+        const ref = chart.options.refValue;
+        if (ref === undefined) return;
+        const x = chart.scales.x.getPixelForValue(ref);
+        const ctx = chart.ctx;
+        ctx.save();
+        ctx.strokeStyle = COLORS.net;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x, chart.chartArea.top);
+        ctx.lineTo(x, chart.chartArea.bottom);
+        ctx.stroke();
+        ctx.restore();
+      },
+    }],
   });
 
   const jobsOptions = baseOptions("Orang / job-year per tahun");
@@ -178,6 +222,50 @@ function updateCharts(result, ledger, params, rmThreshold) {
     ],
   };
   Charts.jobs.update();
+
+  Charts.substitution.data = {
+    labels: labels,
+    datasets: [
+      { label: "Tambahan PLTS atap vs baseline (GWp)", data: rows.map((r) => (r.pv_mwp - r.pv_mwp_base) / 1000),
+        borderColor: COLORS.pv, backgroundColor: COLORS.pv, borderWidth: 2, pointRadius: 3 },
+      { label: "PLTU pensiun lebih awal dari baseline (GW)", data: rows.map((r) => r.retired_mw / 1000),
+        borderColor: COLORS.export, backgroundColor: COLORS.export, borderWidth: 2, pointRadius: 3 },
+    ],
+  };
+  Charts.substitution.update();
+}
+
+// Analysis Charts
+
+function updateCompare(items) {
+  /* items: [{label, summary}] -> neraca PLN, negara, nilai kesehatan */
+  const series = [["pln_rp", "Neraca PLN", SERIES.pln], ["state_rp", "Neraca negara (PLN + APBN)", SERIES.state],
+                  ["health_saved_rp", "Nilai kesehatan dihindari", SERIES.health]];
+  Charts.compare.data = {
+    labels: items.map((it) => it.label),
+    datasets: series.map(([key, label, color]) => ({
+      label: label, data: items.map((it) => toT(it.summary[key])), backgroundColor: color,
+      borderColor: SURFACE, borderWidth: 2, borderRadius: 2,
+    })),
+  };
+  Charts.compare.update();
+}
+
+function updateTornado(rows, ledger) {
+  /* baris sensitivitas -> batang dari nilai acuan ke nilai -20% dan +20% */
+  const k = ledger === "pln" ? "pln" : "state";
+  const sorted = rows.slice().sort((a, b) =>
+    Math.abs(b["high_" + k] - b["low_" + k]) - Math.abs(a["high_" + k] - a["low_" + k]));
+  const ref = toT(sorted[0]["ref_" + k]);
+  Charts.tornado.options.refValue = ref;
+  Charts.tornado.data = {
+    labels: sorted.map((r) => r.param),
+    datasets: [
+      { label: "Parameter -20%", data: sorted.map((r) => [ref, toT(r["low_" + k])]), backgroundColor: SERIES.low, borderRadius: 2 },
+      { label: "Parameter +20%", data: sorted.map((r) => [ref, toT(r["high_" + k])]), backgroundColor: SERIES.high, borderRadius: 2 },
+    ],
+  };
+  Charts.tornado.update();
 }
 
 function downloadChart(id) {

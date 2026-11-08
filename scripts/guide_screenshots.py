@@ -111,6 +111,9 @@ def capture():
         page.evaluate("() => window.scrollTo(0, document.querySelector('.tabs').getBoundingClientRect().top + window.scrollY - 60)")
         page.wait_for_timeout(500)
         annotate(page, "07-indikator", ["#roadmap table >> nth=0", "#roadmap h3"], pad=60)
+        page.locator("#chart-substitution").scroll_into_view_if_needed()
+        page.wait_for_timeout(400)
+        annotate(page, "07-kesetaraan", ["#chart-substitution"], pad=30)
 
         # Candidate Tab
         page.click("button[data-tab=kandidat]")
@@ -123,7 +126,7 @@ def capture():
         page.click("button[data-tab=neraca]")
         page.evaluate("() => window.scrollTo(0, document.querySelector('.tabs').getBoundingClientRect().top + window.scrollY - 330)")
         page.wait_for_timeout(700)
-        annotate(page, "09-neraca", [".tabs", "#ledger-toggle", ".chart-actions"], crop=False)
+        annotate(page, "09-neraca", [".tabs", "#ledger-toggle", "#tab-neraca .chart-actions"], crop=False)
 
         # Criteria Tab
         page.click("button[data-tab=kriteria]")
@@ -131,10 +134,16 @@ def capture():
         page.locator("#criteria").scroll_into_view_if_needed()
         annotate(page, "10-kriteria", ["#criteria h3 >> nth=0", "#criteria h3 >> nth=1"], pad=120)
 
+        # Analysis Tab
+        page.click("button[data-tab=analisis]")
+        page.wait_for_timeout(1500)
+        page.locator("#tab-analisis").scroll_into_view_if_needed()
+        annotate(page, "11-analisis", ["#chart-compare", "#sens-toggle", "#chart-tornado"], pad=60)
+
         # Share
         page.evaluate("() => window.scrollTo(0, 0)")
         page.locator("#share").scroll_into_view_if_needed()
-        annotate(page, "11-bagikan", ["#share", "#reset"])
+        annotate(page, "12-bagikan", ["#share", "#reset"])
 
         # Report Figure
         page.goto(f"http://localhost:{PORT}/index.html")

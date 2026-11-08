@@ -9,6 +9,7 @@ const App = {
   year: 2026,
   ledger: "pln",
   tab: "roadmap",
+  sens: "pln",
   timer: null,
 };
 
@@ -38,6 +39,7 @@ function recompute(light) {
   renderCriteria(App.data, App.scenario, App.result);
   renderRoadmap(App.data, App.scenario, App.result);
   if (App.tab === "kandidat") showCandidates();
+  if (App.tab === "analisis") showAnalysis();
   if (!light) renderRetireList(App.data, App.scenario, recompute);
   syncControls(App.scenario);
 }
@@ -64,6 +66,27 @@ function showCandidates() {
     markCustom();
     recompute();
   });
+}
+
+// Scenario Analysis
+
+function showAnalysis() {
+  /* perbandingan skenario aktif, komponennya, dan preset roadmap + sensitivitas */
+  const sc = App.scenario;
+  const parts = splitComponents(App.data.params, sc);
+  const items = [
+    { label: "Skenario aktif", summary: App.result.summary },
+    { label: "Komponen PLTS atap", summary: run(App.data, parts.pv).summary },
+    { label: "Komponen pensiun dini", summary: run(App.data, parts.retire).summary },
+  ];
+  const active = JSON.stringify(sc);
+  for (const [key, p] of Object.entries(App.presets)) {
+    if (key === "baseline" || JSON.stringify(p.sc) === active) continue;
+    items.push({ label: p.label, summary: run(App.data, p.sc).summary });
+  }
+  updateCompare(items);
+  App.sensRows = sensitivity(App.data, sc);
+  updateTornado(App.sensRows, App.sens);
 }
 
 // Plant Selection
@@ -166,6 +189,7 @@ function bindControls() {
       document.getElementById("tab-" + btn.dataset.tab).classList.remove("hidden");
       App.tab = btn.dataset.tab;
       if (App.tab === "kandidat") showCandidates();
+      if (App.tab === "analisis") showAnalysis();
     };
   }
   for (const btn of document.querySelectorAll("#ledger-toggle button")) {
@@ -174,6 +198,14 @@ function bindControls() {
       btn.classList.add("active");
       App.ledger = btn.dataset.ledger;
       updateCharts(App.result, App.ledger, App.data.params, App.data.params.system.rm_threshold.value);
+    };
+  }
+  for (const btn of document.querySelectorAll("#sens-toggle button")) {
+    btn.onclick = () => {
+      document.querySelectorAll("#sens-toggle button").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      App.sens = btn.dataset.sens;
+      if (App.sensRows) updateTornado(App.sensRows, App.sens);
     };
   }
   for (const btn of document.querySelectorAll("[data-png]")) btn.onclick = () => downloadChart(btn.dataset.png);

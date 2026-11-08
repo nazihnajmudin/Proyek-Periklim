@@ -77,10 +77,8 @@ for (const [key, p] of Object.entries(presets)) {
 }
 // Roadmap Components (PLTS atap saja dan pensiun dini saja)
 const road = presets.roadmap.sc;
-const parts = {
-  roadmap_pv: Object.assign(JSON.parse(JSON.stringify(road)), { retire: {} }),
-  roadmap_retire: Object.assign(JSON.parse(JSON.stringify(presets.baseline.sc)), { retire: road.retire, fund: road.fund }),
-};
+const split = m.splitComponents(data.params, road);
+const parts = { roadmap_pv: split.pv, roadmap_retire: split.retire };
 for (const [key, sc] of Object.entries(parts)) {
   summaryRows.push(Object.assign({ preset: key, label: key }, m.run(data, sc).summary));
 }

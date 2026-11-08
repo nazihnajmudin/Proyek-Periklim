@@ -431,6 +431,43 @@ function roadmapKpis(data, sc, result) {
   };
 }
 
+// Scenario Analysis
+
+function splitComponents(params, sc) {
+  /* skenario -> komponen PLTS atap saja dan komponen pensiun dini saja */
+  const pv = JSON.parse(JSON.stringify(sc));
+  pv.retire = {};
+  const retire = Object.assign(baselineScenario(params), { retire: sc.retire, fund: sc.fund, compMode: sc.compMode });
+  return { pv: pv, retire: retire };
+}
+
+const SENSITIVITY_KEYS = [
+  ["coal", "cap_charge_usd_kw_yr", "Pembayaran kapasitas IPP"],
+  ["coal", "comp_etm_rp_mw_yr", "Kompensasi pensiun (ETM)"],
+  ["coal", "replacement_usd_kw_yr", "Biaya pembangkit pengganti"],
+  ["coal", "coal_price_usd_t", "Harga batu bara DMO"],
+  ["pv", "payback_k", "Kepekaan adopsi terhadap balik modal"],
+  ["pv", "trend_add_mwp_yr", "Tren tambahan PLTS atap"],
+  ["system", "demand_growth", "Pertumbuhan beban"],
+  ["system", "usd_idr", "Kurs"],
+];
+
+function sensitivity(data, sc) {
+  /* parameter kunci +-20 persen -> neraca PLN dan negara kumulatif */
+  const ref = run(data, sc).summary;
+  const withParam = (group, key, factor) => {
+    const params = JSON.parse(JSON.stringify(data.params));
+    params[group][key].value *= factor;
+    return Object.assign({}, data, { params: params });
+  };
+  return SENSITIVITY_KEYS.map(([group, key, label]) => {
+    const low = run(withParam(group, key, 0.8), sc).summary;
+    const high = run(withParam(group, key, 1.2), sc).summary;
+    return { param: label, ref_pln: ref.pln_rp, low_pln: low.pln_rp, high_pln: high.pln_rp,
+             ref_state: ref.state_rp, low_state: low.state_rp, high_state: high.state_rp };
+  });
+}
+
 // Candidate Screening
 
 function rankCandidates(data, sc, year) {
@@ -477,5 +514,5 @@ function provinceCapacity(data, result, yearIndex) {
 }
 
 if (typeof module !== "undefined") {
-  module.exports = { run, baselineScenario, makePresets, roadmapKpis, rankCandidates, phaseOf, PHASES, provinceCapacity, payback, varCost, fleetAverages, avgYield, YEARS, SEGMENTS };
+  module.exports = { run, baselineScenario, makePresets, roadmapKpis, rankCandidates, splitComponents, sensitivity, phaseOf, PHASES, provinceCapacity, payback, varCost, fleetAverages, avgYield, YEARS, SEGMENTS };
 }

@@ -1,7 +1,6 @@
 """Gambar dokumen kajian: data olahan + hasil validasi -> PNG di docs/kajian/figures"""
 import json
 import textwrap
-import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -30,26 +29,6 @@ def save(fig, name):
     plt.close(fig)
 
 
-def map_plants():
-    """Peta PLTU Jawa-Bali: ukuran = MW, warna = IPP/PLN"""
-    provinces = gpd.read_file("data/processed/provinces.geojson")
-    plants = pd.DataFrame(json.load(open("data/processed/plants.json")))
-    groups = plants.groupby(["plant", "type"]).agg(mw=("mw", "sum"), lat=("lat", "first"), lon=("lon", "first")).reset_index()
-
-    fig, ax = plt.subplots(figsize=(7.2, 3.0))
-    provinces.plot(ax=ax, color="#f1f1ec", edgecolor="#9a9a94", linewidth=0.5)
-    for kind, color in [("PLN", VIOLET), ("IPP", ORANGE)]:
-        g = groups[groups["type"] == kind]
-        ax.scatter(g["lon"], g["lat"], s=g["mw"] / 12, color=color, alpha=0.85, edgecolor="white",
-                   linewidth=0.8, label=f"{kind} ({g['mw'].sum() / 1000:.1f} GW)", zorder=3)
-    for name in ["Cirebon", "Suralaya", "Paiton", "Tanjung Jati B", "Pelabuhan Ratu", "Cilacap Sumber"]:
-        g = groups[groups["plant"] == name].iloc[0]
-        ax.annotate(name, (g["lon"], g["lat"]), xytext=(4, 6), textcoords="offset points", fontsize=7, color=INK)
-    ax.set_axis_off()
-    ax.legend(loc="lower left", fontsize=7, markerscale=0.4)
-    save(fig, "peta_pltu")
-
-
 def preset_summary():
     """Neraca kumulatif per preset: PLN, negara, kesehatan"""
     df = pd.read_csv(f"{RESULTS}/preset_summary.csv")
@@ -72,35 +51,6 @@ def preset_summary():
     save(fig, "neraca_preset")
 
 
-def ledger_years(preset, name):
-    """Komponen neraca PLN per tahun untuk satu preset"""
-    df = pd.read_csv(f"{RESULTS}/preset_{preset}.csv")
-    parts = [
-        ("Pendapatan PLN hilang", df["revenue_lost_rp"], BLUE),
-        ("Kompensasi ekspor PLTS", df["export_cost_rp"], ORANGE),
-        ("Biaya energi dihemat", df["energy_saved_rp"], AQUA),
-        ("Biaya kapasitas PLTU dihemat", df["capacity_saved_rp"], YELLOW),
-        ("Kompensasi pensiun dan pengganti", df["comp_pln_rp"] + df["replacement_rp"], MAGENTA),
-    ]
-    fig, ax = plt.subplots(figsize=(7.2, 3.0))
-    pos = [0.0] * len(df)
-    neg = [0.0] * len(df)
-    for label, values, color in parts:
-        values = (values / 1e12).tolist()
-        bottom = [pos[i] if v >= 0 else neg[i] for i, v in enumerate(values)]
-        ax.bar(df["year"], values, bottom=bottom, color=color, edgecolor="white", linewidth=1, label=label)
-        for i, v in enumerate(values):
-            if v >= 0:
-                pos[i] += v
-            else:
-                neg[i] += v
-    ax.plot(df["year"], df["pln_rp"] / 1e12, color=INK, linewidth=2, marker="o", markersize=3, label="Neraca bersih PLN")
-    ax.axhline(0, color=INK, linewidth=0.8)
-    ax.set_ylabel("Rp triliun per tahun")
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.28), ncol=3, fontsize=7)
-    save(fig, name)
-
-
 def substitution():
     """Tambahan PLTS atap vs PLTU pensiun dini per tahun, roadmap lengkap"""
     df = pd.read_csv(f"{RESULTS}/preset_roadmap.csv")
@@ -112,7 +62,7 @@ def substitution():
     ax.text(2029, 3.3, "Fase 2", ha="center", fontsize=7, color=MUTED)
     ax.text(2033, 3.3, "Fase 3", ha="center", fontsize=7, color=MUTED)
     ax.plot(df["year"], added, color=AQUA, linewidth=2, marker="o", markersize=3, label="Tambahan PLTS atap vs baseline (GWp)")
-    ax.plot(df["year"], retired, color=ORANGE, linewidth=2, marker="o", markersize=3, label="PLTU pensiun dini (GW)")
+    ax.plot(df["year"], retired, color=ORANGE, linewidth=2, marker="o", markersize=3, label="PLTU pensiun lebih awal dari baseline (GW)")
     ax.set_ylim(0, 3.6)
     ax.set_ylabel("GW")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.2), ncol=2, fontsize=7)
@@ -152,10 +102,7 @@ def tornado():
 
 
 if __name__ == "__main__":
-    map_plants()
     preset_summary()
-    ledger_years("roadmap", "neraca_roadmap")
-    ledger_years("seimbang", "neraca_seimbang")
     substitution()
     reserve_margin()
     tornado()

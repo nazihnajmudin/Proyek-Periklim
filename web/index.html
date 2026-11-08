@@ -95,11 +95,14 @@
         <button data-tab="keandalan">Keandalan</button>
         <button data-tab="dampak">Dampak</button>
         <button data-tab="kriteria">Kriteria Permen 10/2025</button>
+        <button data-tab="analisis">Analisis</button>
       </div>
 
       <div class="tab-body" id="tab-roadmap">
         <p class="explain">Capaian skenario terhadap indikator keberhasilan laporan Kelompok 17 (Tabel 5.6) dan roadmap empat fase (Tabel 6.1).</p>
         <div id="roadmap"></div>
+        <div class="chart-box"><canvas id="chart-substitution"></canvas></div>
+        <div class="chart-actions"><button data-png="chart-substitution">Unduh PNG kesetaraan</button></div>
       </div>
 
       <div class="tab-body hidden" id="tab-kandidat">
@@ -138,6 +141,23 @@
         <div class="chart-box"><canvas id="chart-deaths"></canvas></div>
         <div class="chart-box"><canvas id="chart-jobs"></canvas></div>
         <div class="chart-actions"><button data-png="chart-impact">Unduh PNG CO2</button><button data-png="chart-deaths">Unduh PNG kesehatan</button><button data-png="chart-jobs">Unduh PNG pekerja</button></div>
+      </div>
+
+      <div class="tab-body hidden" id="tab-analisis">
+        <p class="explain">Analisis yang membutuhkan banyak simulasi sekaligus. Dihitung ulang dari skenario aktif setiap tab ini dibuka atau skenario berubah.</p>
+        <h3>Perbandingan skenario</h3>
+        <p class="hint">Skenario aktif dipecah menjadi komponen PLTS atap saja dan pensiun dini saja, lalu dibandingkan dengan skenario roadmap lain. Kumulatif 2026-2040.</p>
+        <div class="chart-box"><canvas id="chart-compare"></canvas></div>
+        <div class="tab-head">
+          <h3>Sensitivitas parameter &plusmn;20%</h3>
+          <div class="toggle" id="sens-toggle">
+            <button data-sens="pln" class="active">Neraca PLN</button>
+            <button data-sens="state">Neraca negara</button>
+          </div>
+        </div>
+        <p class="hint">Setiap parameter kunci diubah 20% lebih rendah dan lebih tinggi, parameter lain tetap. Garis hitam adalah nilai skenario aktif.</p>
+        <div class="chart-box tall"><canvas id="chart-tornado"></canvas></div>
+        <div class="chart-actions"><button data-png="chart-compare">Unduh PNG perbandingan</button><button data-png="chart-tornado">Unduh PNG sensitivitas</button></div>
       </div>
 
       <div class="tab-body hidden" id="tab-kriteria">

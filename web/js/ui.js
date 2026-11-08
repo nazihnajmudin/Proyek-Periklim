@@ -228,14 +228,18 @@ function renderRoadmap(data, sc, result) {
     rows.map((r) => "<tr><td>" + r[0] + "</td>" + cell(r[1], r[2]) + "</tr>").join("") + "</table>";
 
   // Phase Summary
-  html += '<h3>Ringkasan per fase roadmap</h3><table class="criteria"><tr><th>Fase</th><th>Tahun</th><th>PLTS atap akhir fase</th><th>PLTU pensiun dini</th><th>Neraca negara</th></tr>';
+  html += '<h3>Ringkasan per fase roadmap</h3><table class="criteria"><tr><th>Fase</th><th>Tahun</th><th>PLTS atap akhir fase</th>' +
+    "<th>PLTU pensiun dini</th><th>Neraca negara</th><th>Dana luar</th><th>Kematian dini dihindari</th><th>CO2 dihindari</th></tr>";
   for (const ph of [1, 2, 3, 4]) {
     const rows = result.rows.filter((r) => r.phase === ph);
     if (rows.length === 0) continue;
     const last = rows[rows.length - 1];
-    const state = rows.reduce((a, r) => a + r.state_rp, 0);
+    const sum = (key) => rows.reduce((a, r) => a + r[key], 0);
+    const state = sum("state_rp");
     html += "<tr><td>" + PHASES[ph] + "</td><td>" + rows[0].year + "-" + last.year + "</td><td>" +
-      fmtNum(last.pv_mwp, 0) + " MWp</td><td>" + fmtNum(last.retired_mw, 0) + " MW</td><td>" + fmtSigned(fmtRp(state), state) + "</td></tr>";
+      fmtNum(last.pv_mwp, 0) + " MWp</td><td>" + fmtNum(last.retired_mw, 0) + " MW</td><td>" + fmtSigned(fmtRp(state), state) +
+      "</td><td>" + fmtRp(sum("ext_rp")) + "</td><td>" + fmtNum(sum("deaths_avoided"), 0) + "</td><td>" +
+      fmtNum(sum("co2_avoided_t") / 1e6, 1) + " Mt</td></tr>";
   }
   document.getElementById("roadmap").innerHTML = html + "</table>";
 }

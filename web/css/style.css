@@ -176,3 +176,7 @@ label.inline { display: flex; align-items: center; gap: 6px; font-size: 13px; wh
 label.inline select { width: auto; }
 #candidates button { padding: 2px 8px; font-size: 12px; }
 #candidates { overflow-x: auto; }
+
+/* Analysis Tab */
+.chart-box.tall { height: 340px; }
+#tab-analisis h3 { margin: 14px 0 4px; }
