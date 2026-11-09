@@ -80,6 +80,8 @@ def capture():
         annotate(page, "01-tampilan", ["#panel", "#kpis", ".map-wrap", ".tabs"], crop=False)
 
         # Preset
+        page.hover("section:has(#preset) .note-btn")
+        page.wait_for_timeout(400)
         annotate(page, "02-preset", ["#preset", "#preset-note"])
 
         # Plant Selection

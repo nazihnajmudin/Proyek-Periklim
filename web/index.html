@@ -6,12 +6,17 @@
   <title>PowerShift</title>
   <meta name="description" content="Simulator integrasi PLTS atap dan pensiun dini PLTU untuk sistem listrik Jawa-Bali">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400;500&display=swap">
+  <meta name="theme-color" content="#f4f6f5">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <a class="skip" href="#main">Lewati ke konten</a>
   <header class="top">
     <div class="brand">
-      <span class="logo">PowerShift</span>
+      <span class="logo" translate="no">PowerShift</span>
       <span class="tagline">Integrasi PLTS atap dan pensiun dini PLTU, sistem Jawa-Bali</span>
     </div>
     <nav>
@@ -23,7 +28,7 @@
     </nav>
   </header>
 
-  <main class="layout">
+  <main id="main" class="layout">
     <aside class="panel" id="panel">
       <section>
         <h2>Skenario roadmap</h2>
@@ -58,7 +63,7 @@
           <input type="range" id="pvfrom" min="2026" max="2032" step="1"></label>
         <label class="slider">Nilai ekspor ke PLN <b id="v-export"></b>
           <input type="range" id="export" min="0" max="100" step="5"></label>
-        <p class="hint">0% = aturan sekarang (Permen ESDM 2/2024)</p>
+        <p class="hint" data-note>Nilai ekspor 0% = aturan sekarang (Permen ESDM 2/2024)</p>
         <label class="slider">Kuota Jawa-Bali (MW/tahun) <b id="v-quota"></b>
           <input type="range" id="quota" min="200" max="3000" step="50"></label>
         <label class="slider">Subsidi 450/900 VA dialihkan <b id="v-program"></b>
@@ -66,10 +71,10 @@
       </section>
 
       <div class="buttons">
-        <button id="reset">Reset ke baseline</button>
-        <button id="share" class="primary">Bagikan</button>
+        <button type="button" id="reset">Reset ke baseline</button>
+        <button type="button" id="share" class="primary">Bagikan</button>
       </div>
-      <p class="hint" id="share-msg"></p>
+      <p class="hint" id="share-msg" role="status" aria-live="polite"></p>
     </aside>
 
     <section class="content">
@@ -78,7 +83,7 @@
       <div class="map-wrap">
         <div id="map"></div>
         <div class="map-controls">
-          <button id="play" title="Putar">&#9654;</button>
+          <button type="button" id="play" title="Putar" aria-label="Putar animasi tahun">&#9654;&#xFE0E;</button>
           <input type="range" id="year" min="2026" max="2040" step="1" value="2026">
           <span id="year-label">2026</span>
         </div>
@@ -89,20 +94,20 @@
       </div>
 
       <div class="tabs">
-        <button data-tab="roadmap" class="active">Indikator roadmap</button>
-        <button data-tab="kandidat">Kandidat PLTU</button>
-        <button data-tab="neraca">Neraca</button>
-        <button data-tab="keandalan">Keandalan</button>
-        <button data-tab="dampak">Dampak</button>
-        <button data-tab="kriteria">Kriteria Permen 10/2025</button>
-        <button data-tab="analisis">Analisis</button>
+        <button type="button" data-tab="roadmap" class="active">Indikator roadmap</button>
+        <button type="button" data-tab="kandidat">Kandidat PLTU</button>
+        <button type="button" data-tab="neraca">Neraca</button>
+        <button type="button" data-tab="keandalan">Keandalan</button>
+        <button type="button" data-tab="dampak">Dampak</button>
+        <button type="button" data-tab="kriteria">Kriteria Permen 10/2025</button>
+        <button type="button" data-tab="analisis">Analisis</button>
       </div>
 
       <div class="tab-body" id="tab-roadmap">
         <p class="explain">Capaian skenario terhadap indikator keberhasilan laporan Kelompok 17 (Tabel 5.6) dan roadmap empat fase (Tabel 6.1).</p>
         <div id="roadmap"></div>
-        <div class="chart-box"><canvas id="chart-substitution"></canvas></div>
-        <div class="chart-actions"><button data-png="chart-substitution">Unduh PNG kesetaraan</button></div>
+        <div class="chart-box"><canvas id="chart-substitution" role="img" aria-label="Grafik tambahan PLTS atap dan PLTU pensiun dini per tahun"></canvas></div>
+        <div class="chart-actions"><button type="button" data-png="chart-substitution">Unduh PNG kesetaraan</button></div>
       </div>
 
       <div class="tab-body hidden" id="tab-kandidat">
@@ -119,45 +124,45 @@
         <div class="tab-head">
           <p class="explain">Selisih terhadap baseline phase down di akhir PPA. Positif berarti lebih untung dari baseline.</p>
           <div class="toggle" id="ledger-toggle">
-            <button data-ledger="pln" class="active">PLN</button>
-            <button data-ledger="apbn">APBN</button>
-            <button data-ledger="state">Negara (PLN + APBN)</button>
+            <button type="button" data-ledger="pln" class="active">PLN</button>
+            <button type="button" data-ledger="apbn">APBN</button>
+            <button type="button" data-ledger="state">Negara (PLN + APBN)</button>
           </div>
         </div>
-        <div class="chart-box"><canvas id="chart-ledger"></canvas></div>
-        <div class="chart-actions"><button data-png="chart-ledger">Unduh PNG</button><button id="csv">Unduh CSV</button></div>
+        <div class="chart-box"><canvas id="chart-ledger" role="img" aria-label="Grafik komponen neraca per tahun"></canvas></div>
+        <div class="chart-actions"><button type="button" data-png="chart-ledger">Unduh PNG</button><button type="button" id="csv">Unduh CSV</button></div>
       </div>
 
       <div class="tab-body hidden" id="tab-keandalan">
         <p class="explain">Reserve margin Jawa-Bali. PLTS atap tidak dihitung menambah daya mampu karena beban puncak terjadi malam hari.</p>
-        <div class="chart-box"><canvas id="chart-rm"></canvas></div>
-        <div class="chart-box"><canvas id="chart-energy"></canvas></div>
-        <div class="chart-actions"><button data-png="chart-rm">Unduh PNG cadangan</button><button data-png="chart-energy">Unduh PNG energi</button></div>
+        <div class="chart-box"><canvas id="chart-rm" role="img" aria-label="Grafik reserve margin Jawa-Bali per tahun"></canvas></div>
+        <div class="chart-box"><canvas id="chart-energy" role="img" aria-label="Grafik energi PLTS atap dan PLTU pensiun dini per tahun"></canvas></div>
+        <div class="chart-actions"><button type="button" data-png="chart-rm">Unduh PNG cadangan</button><button type="button" data-png="chart-energy">Unduh PNG energi</button></div>
       </div>
 
       <div class="tab-body hidden" id="tab-dampak">
         <p class="explain">Emisi dan kematian dini yang dihindari dibanding baseline, serta pekerja PLTU terdampak dan lapangan kerja PLTS atap.</p>
-        <div class="chart-box"><canvas id="chart-impact"></canvas></div>
-        <div class="chart-box"><canvas id="chart-deaths"></canvas></div>
-        <div class="chart-box"><canvas id="chart-jobs"></canvas></div>
-        <div class="chart-actions"><button data-png="chart-impact">Unduh PNG CO2</button><button data-png="chart-deaths">Unduh PNG kesehatan</button><button data-png="chart-jobs">Unduh PNG pekerja</button></div>
+        <div class="chart-box"><canvas id="chart-impact" role="img" aria-label="Grafik CO2 dihindari kumulatif"></canvas></div>
+        <div class="chart-box"><canvas id="chart-deaths" role="img" aria-label="Grafik kematian dini dihindari kumulatif"></canvas></div>
+        <div class="chart-box"><canvas id="chart-jobs" role="img" aria-label="Grafik pekerja PLTU terdampak dan lapangan kerja PLTS atap"></canvas></div>
+        <div class="chart-actions"><button type="button" data-png="chart-impact">Unduh PNG CO2</button><button type="button" data-png="chart-deaths">Unduh PNG kesehatan</button><button type="button" data-png="chart-jobs">Unduh PNG pekerja</button></div>
       </div>
 
       <div class="tab-body hidden" id="tab-analisis">
         <p class="explain">Analisis yang membutuhkan banyak simulasi sekaligus. Dihitung ulang dari skenario aktif setiap tab ini dibuka atau skenario berubah.</p>
         <h3>Perbandingan skenario</h3>
         <p class="hint">Skenario aktif dipecah menjadi komponen PLTS atap saja dan pensiun dini saja, lalu dibandingkan dengan skenario roadmap lain. Kumulatif 2026-2040.</p>
-        <div class="chart-box"><canvas id="chart-compare"></canvas></div>
+        <div class="chart-box"><canvas id="chart-compare" role="img" aria-label="Grafik perbandingan skenario"></canvas></div>
         <div class="tab-head">
           <h3>Sensitivitas parameter &plusmn;20%</h3>
           <div class="toggle" id="sens-toggle">
-            <button data-sens="pln" class="active">Neraca PLN</button>
-            <button data-sens="state">Neraca negara</button>
+            <button type="button" data-sens="pln" class="active">Neraca PLN</button>
+            <button type="button" data-sens="state">Neraca negara</button>
           </div>
         </div>
         <p class="hint">Setiap parameter kunci diubah 20% lebih rendah dan lebih tinggi, parameter lain tetap. Garis hitam adalah nilai skenario aktif.</p>
-        <div class="chart-box tall"><canvas id="chart-tornado"></canvas></div>
-        <div class="chart-actions"><button data-png="chart-compare">Unduh PNG perbandingan</button><button data-png="chart-tornado">Unduh PNG sensitivitas</button></div>
+        <div class="chart-box tall"><canvas id="chart-tornado" role="img" aria-label="Grafik sensitivitas parameter"></canvas></div>
+        <div class="chart-actions"><button type="button" data-png="chart-compare">Unduh PNG perbandingan</button><button type="button" data-png="chart-tornado">Unduh PNG sensitivitas</button></div>
       </div>
 
       <div class="tab-body hidden" id="tab-kriteria">

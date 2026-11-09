@@ -4,6 +4,56 @@ function cloneScenario(sc) {
   return JSON.parse(JSON.stringify(sc));
 }
 
+// Hover Notes
+
+const INFO_ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.3"/>' +
+  '<path d="M8 7v4M8 4.6v.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+const CLOSE_ICON = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+
+function noteHtml(text, label, visible) {
+  /* ikon info -> teks keterangan muncul saat hover atau fokus */
+  return '<span class="note"><button type="button" class="note-btn' + (visible ? " note-label" : "") + '" aria-label="' + label + '">' +
+    INFO_ICON + (visible ? "<span>" + visible + "</span>" : "") +
+    '</button><span class="note-pop" role="tooltip">' + text + "</span></span>";
+}
+
+function toNote(el, anchor, label, text) {
+  /* elemen keterangan statis -> dipindah ke dalam note di anchor */
+  const wrap = document.createElement("span");
+  wrap.className = "note";
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "note-btn" + (text ? " note-label" : "");
+  btn.setAttribute("aria-label", label);
+  btn.innerHTML = INFO_ICON + (text ? "<span>" + text + "</span>" : "");
+  el.classList.add("note-pop");
+  el.setAttribute("role", "tooltip");
+  wrap.append(btn, el);
+  if (anchor) anchor.appendChild(wrap);
+  return wrap;
+}
+
+function setupNotes() {
+  // keterangan panel
+  const preset = document.getElementById("preset-note");
+  toNote(preset, preset.parentElement.querySelector("h2"), "Isi skenario");
+  const exportHint = document.querySelector("[data-note]");
+  toNote(exportHint, exportHint.parentElement.querySelector("h2"), "Keterangan PLTS atap");
+
+  // keterangan tab
+  for (const p of document.querySelectorAll(".tab-body .explain")) {
+    const parent = p.parentElement;
+    const next = p.nextSibling;
+    const wrap = toNote(p, null, "Tentang tab ini", "Tentang tab ini");
+    parent.insertBefore(wrap, next);
+  }
+  for (const p of document.querySelectorAll(".tab-body > .hint")) {
+    let head = p.previousElementSibling;
+    if (head && head.classList.contains("tab-head")) head = head.querySelector("h3");
+    if (head && head.tagName === "H3") toNote(p, head, "Keterangan " + head.textContent);
+  }
+}
+
 // URL State
 
 function scenarioToUrl(sc) {
@@ -65,12 +115,12 @@ function renderRetireList(data, sc, onChange) {
     const item = document.createElement("div");
     item.className = "retire-item";
     item.innerHTML =
-      '<div class="name"><span>' + g.name + " (" + fmtNum(mw, 0) + ' MW)</span><button title="Hapus">x</button></div>' +
-      '<div class="meta">' + unitNames + "</div>" +
+      '<div class="name"><span>' + g.name + " (" + fmtNum(mw, 0) + " MW)</span>" +
+      noteHtml(unitNames + "<br>Pensiun baseline: " + [...new Set(units.map((u) => u.retire_base))].join(", "), "Detail " + g.name) +
+      '<button type="button" class="remove" title="Hapus" aria-label="Hapus ' + g.name + '">' + CLOSE_ICON + "</button></div>" +
       '<label class="slider">Tahun pensiun <b>' + year + "</b>" +
-      '<input type="range" min="2027" max="' + Math.min(maxYear, 2040) + '" step="1" value="' + year + '"></label>' +
-      '<div class="meta">Baseline: ' + [...new Set(units.map((u) => u.retire_base))].join(", ") + "</div>";
-    item.querySelector("button").onclick = () => {
+      '<input type="range" min="2027" max="' + Math.min(maxYear, 2040) + '" step="1" value="' + year + '"></label>';
+    item.querySelector("button.remove").onclick = () => {
       for (const u of units) delete sc.retire[u.id];
       onChange();
     };
@@ -116,8 +166,8 @@ function syncControls(sc) {
 function renderKpis(result, baseResult) {
   const s = result.summary;
   const card = (label, value, sub, tone) =>
-    '<div class="kpi ' + (tone || "") + '"><div class="label">' + label + '</div><div class="value">' + value +
-    '</div><div class="sub">' + sub + "</div></div>";
+    '<div class="kpi ' + (tone || "") + '" tabindex="0"><div class="label">' + label + '</div><div class="value">' + value +
+    '</div><div class="sub" role="tooltip">' + sub + "</div></div>";
   const tone = (x) => (x > 1e9 ? "good" : x < -1e9 ? "bad" : "");
   document.getElementById("kpis").innerHTML =
     card("Neraca PLN", fmtSigned(fmtRp(s.pln_rp), s.pln_rp), "kumulatif 2026-2040 vs baseline", tone(s.pln_rp)) +
@@ -148,9 +198,12 @@ function renderCriteria(data, sc, result) {
   const s = result.summary;
   const fleetEf = result.fleet.efMarg;
   const cell = (level, text) => '<td><span class="status ' + level + '">' +
-    { ok: "Terpenuhi", mid: "Sebagian", no: "Belum", info: "Informasi" }[level] + "</span><br>" + text + "</td>";
+    { ok: "Terpenuhi", mid: "Sebagian", no: "Belum", info: "Informasi" }[level] + '</span><span class="detail" role="tooltip">' + text + "</span></td>";
 
   // Plant Criteria
+  // isi sel pendek, tampil langsung tanpa hover
+  const plantCell = (level, text) => '<td><span class="status ' + level + '">' +
+    { ok: "Terpenuhi", mid: "Sebagian", no: "Belum", info: "Informasi" }[level] + '</span><span class="fact">' + text + "</span></td>";
   let html = "<h3>Kriteria per PLTU (Pasal 11 ayat 1, butir 1-4)</h3>" +
     '<table class="criteria"><tr><th>PLTU</th><th>1. Kapasitas</th><th>2. Usia</th><th>3. Utilisasi</th><th>4. Emisi GRK</th></tr>';
   for (const g of chosen) {
@@ -160,10 +213,10 @@ function renderCriteria(data, sc, result) {
     const ef = units.reduce((a, u) => a + u.co2_mt * 1e6, 0) / units.reduce((a, u) => a + u.gen_gwh * 1000, 0);
     const ageText = age >= 15 ? age + " tahun pada 2026" : age + " tahun, sisa umur panjang (alasan pembatalan Cirebon-1)";
     html += "<tr><td><b>" + g.name + "</b><br>" + units.map((u) => u.unit).join(", ") + "</td>" +
-      cell("info", fmtNum(mw, 0) + " MW") +
-      cell(age >= 15 ? "ok" : "mid", ageText) +
-      cell("info", "Faktor kapasitas " + fmtPct(units[0].cf, 0) + " (asumsi GEM)") +
-      cell(ef >= fleetEf ? "ok" : "mid", fmtNum(ef, 2) + " tCO2/MWh, rata-rata armada " + fmtNum(fleetEf, 2)) + "</tr>";
+      plantCell("info", fmtNum(mw, 0) + " MW") +
+      plantCell(age >= 15 ? "ok" : "mid", ageText) +
+      plantCell("info", "Faktor kapasitas " + fmtPct(units[0].cf, 0) + " (asumsi GEM)") +
+      plantCell(ef >= fleetEf ? "ok" : "mid", fmtNum(ef, 2) + " tCO2/MWh, rata-rata armada " + fmtNum(fleetEf, 2)) + "</tr>";
   }
   html += "</table>";
 
@@ -186,7 +239,7 @@ function renderCriteria(data, sc, result) {
   ];
   html += "<h3>Kriteria tingkat paket (butir 5-7 dan ayat 2)</h3>" +
     '<table class="criteria"><tr><th>Kriteria</th><th>Penilaian</th></tr>' +
-    rows.map((r) => "<tr><td>" + r[0] + "</td>" + cell(r[1], r[2]) + "</tr>").join("") + "</table>";
+    rows.map((r) => '<tr tabindex="0"><td>' + r[0] + "</td>" + cell(r[1], r[2]) + "</tr>").join("") + "</table>";
   box.innerHTML = html;
 }
 
@@ -196,7 +249,7 @@ function renderRoadmap(data, sc, result) {
   /* indikator laporan kelompok (Tabel 5.6) -> tabel capaian skenario */
   const k = roadmapKpis(data, sc, result);
   const cell = (level, text) => '<td><span class="status ' + level + '">' +
-    { ok: "Tercapai", mid: "Sebagian", no: "Belum", info: "Informasi" }[level] + "</span><br>" + text + "</td>";
+    { ok: "Tercapai", mid: "Sebagian", no: "Belum", info: "Informasi" }[level] + '</span><span class="detail" role="tooltip">' + text + "</span></td>";
   const ratio = k.retiredGw > 0 ? k.pvAdded / 1000 / k.retiredGw : null;
   const rows = [
     ["PLTS atap setara daya PLTU yang dipensiunkan",
@@ -225,7 +278,7 @@ function renderRoadmap(data, sc, result) {
     ["Kematian dini dihindari", k.deaths > 0 ? "ok" : "info", fmtNum(k.deaths, 0) + " jiwa kumulatif 2026-2040"],
   ];
   let html = '<table class="criteria"><tr><th>Indikator</th><th>Capaian skenario</th></tr>' +
-    rows.map((r) => "<tr><td>" + r[0] + "</td>" + cell(r[1], r[2]) + "</tr>").join("") + "</table>";
+    rows.map((r) => '<tr tabindex="0"><td>' + r[0] + "</td>" + cell(r[1], r[2]) + "</tr>").join("") + "</table>";
 
   // Phase Summary
   html += '<h3>Ringkasan per fase roadmap</h3><table class="criteria"><tr><th>Fase</th><th>Tahun</th><th>PLTS atap akhir fase</th>' +
@@ -257,11 +310,11 @@ function renderCandidates(data, sc, year, onAdd) {
       "</td><td>" + r.type + "</td><td>" + fmtNum(r.mw, 0) + "</td><td>" + r.age + "</td><td>" + r.retireBase + "</td><td>" +
       fmtSigned(fmtRp(r.stateRp), r.stateRp) + "</td><td>" + fmtSigned(fmtRp(r.statePerGw), r.statePerGw) + "</td><td>" +
       fmtRp(r.extRp) + "</td><td>" + fmtNum(r.deathsYr, 0) + "</td><td>" + fmtNum(r.workers, 0) + "</td><td>" +
-      (chosen ? "dipilih" : '<button data-plant="' + r.plant + '">Tambah</button>') + "</td></tr>";
+      (chosen ? "dipilih" : '<button type="button" data-plant="' + r.plant + '">Tambah</button>') + "</td></tr>";
   });
   const box = document.getElementById("candidates");
-  box.innerHTML = html + "</table>" +
-    '<p class="hint">Kematian/tahun adalah beban kesehatan unit saat beroperasi. ETP menandai PLTU yang masuk kajian Energy Transition Partnership.</p>';
+  box.innerHTML = noteHtml("Kematian/tahun adalah beban kesehatan unit saat beroperasi. ETP menandai PLTU yang masuk kajian Energy Transition Partnership.",
+    "Keterangan kolom", "Keterangan kolom") + html + "</table>";
   for (const btn of box.querySelectorAll("button[data-plant]")) btn.onclick = () => onAdd(btn.dataset.plant, year);
 }
 

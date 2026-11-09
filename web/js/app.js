@@ -187,6 +187,7 @@ function bindControls() {
       document.querySelectorAll(".tab-body").forEach((b) => b.classList.add("hidden"));
       btn.classList.add("active");
       document.getElementById("tab-" + btn.dataset.tab).classList.remove("hidden");
+      history.replaceState(null, "", location.search + "#" + btn.dataset.tab);
       App.tab = btn.dataset.tab;
       if (App.tab === "kandidat") showCandidates();
       if (App.tab === "analisis") showAnalysis();
@@ -226,11 +227,13 @@ function togglePlay() {
   if (App.timer) {
     clearInterval(App.timer);
     App.timer = null;
-    btn.innerHTML = "&#9654;";
+    btn.innerHTML = "&#9654;&#xFE0E;";
+    btn.setAttribute("aria-label", "Putar animasi tahun");
     return;
   }
   if (App.year >= 2040) setYear(2026);
   btn.innerHTML = "&#10074;&#10074;";
+  btn.setAttribute("aria-label", "Jeda animasi tahun");
   App.timer = setInterval(() => {
     if (App.year >= 2040) return togglePlay();
     setYear(App.year + 1);
@@ -245,6 +248,7 @@ async function start() {
   App.baseResult = run(App.data, App.presets.baseline.sc);
   initMap(App.data, onPlantClick);
   fillPlantSelect(App.data);
+  setupNotes();
   initCharts();
   bindControls();
 
@@ -256,6 +260,10 @@ async function start() {
   } else {
     applyPreset("roadmap");
   }
+
+  // tab dari hash URL
+  const tabBtn = document.querySelector('.tabs button[data-tab="' + location.hash.slice(1) + '"]');
+  if (tabBtn) tabBtn.click();
 }
 
 start();

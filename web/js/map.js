@@ -11,12 +11,13 @@ const MapView = {
 
 // Color Scales
 
-const PV_COLORS = ["#e6f5ee", "#bfe6d3", "#8fd2b4", "#55b98f", "#1baf7a", "#0f7a54"];
-const PVOUT_COLORS = ["#fdf3d8", "#fbe3a6", "#f6cc6a", "#eda100", "#b87a00"];
+// nama token CSS, warna nyata dibaca lewat resolveColor
+const PV_COLORS = [0, 1, 2, 3, 4, 5].map((i) => "var(--pv-" + i + ")");
+const PVOUT_COLORS = [0, 1, 2, 3, 4].map((i) => "var(--pvout-" + i + ")");
 
 function pickColor(colors, value, max) {
   const i = Math.min(colors.length - 1, Math.floor((value / max) * colors.length));
-  return colors[Math.max(0, i)];
+  return resolveColor(colors[Math.max(0, i)]);
 }
 
 // Plant Grouping
@@ -64,12 +65,12 @@ function initMap(data, onPlantClick) {
 
   // Province Choropleth
   MapView.provinceLayer = L.geoJSON(data.provincesGeo, {
-    style: { color: "#7a8a82", weight: 1, fillOpacity: 0.7, fillColor: PV_COLORS[0] },
+    style: { color: resolveColor("var(--map-edge)"), weight: 1, fillOpacity: 0.75, fillColor: resolveColor(PV_COLORS[0]) },
   }).addTo(map);
 
   // Rooftop Solar Potential
   MapView.pvoutLayer = L.geoJSON(data.regenciesGeo, {
-    style: (f) => ({ color: "#ffffff", weight: 0.4, fillOpacity: 0.75,
+    style: (f) => ({ color: resolveColor("var(--color-paper-3)"), weight: 0.4, fillOpacity: 0.75,
                      fillColor: pickColor(PVOUT_COLORS, f.properties.pvout - 1200, 300) }),
     onEachFeature: (f, layer) => layer.bindTooltip(
       f.properties.name + ": " + fmtNum(f.properties.pvout, 0) + " kWh/kWp/tahun"),
@@ -81,12 +82,12 @@ function initMap(data, onPlantClick) {
   // Plant Markers
   data.groups = groupPlants(data.plants);
   for (const g of data.groups) {
-    const marker = L.circleMarker([g.lat, g.lon], { radius: 6, weight: 1.5, color: "#ffffff", fillOpacity: 0.95 });
+    const marker = L.circleMarker([g.lat, g.lon], { radius: 6, weight: 2, color: resolveColor("var(--color-paper-3)"), fillOpacity: 0.95 });
     marker.on("click", () => onPlantClick(g, marker));
     marker.addTo(map);
     MapView.plantMarkers.push({ group: g, marker: marker });
 
-    const circle = L.circle([g.lat, g.lon], { radius: Math.sqrt(g.deaths) * 1400, color: "#b23a3a",
+    const circle = L.circle([g.lat, g.lon], { radius: Math.sqrt(g.deaths) * 1400, color: resolveColor("var(--map-health)"),
                                               weight: 1, fillOpacity: 0.15 });
     circle.bindTooltip(g.name + ": sekitar " + fmtNum(g.deaths, 0) + " kematian dini per tahun");
     MapView.healthLayer.addLayer(circle);
@@ -102,9 +103,9 @@ function addLegend(map) {
     const div = L.DomUtil.create("div", "legend");
     div.innerHTML =
       "<b>PLTU</b><br>" +
-      '<i style="background:var(--coal)"></i>Beroperasi<br>' +
-      '<i style="background:var(--early)"></i>Pensiun dini (skenario)<br>' +
-      '<i style="background:var(--coal-off)"></i>Pensiun sesuai baseline<br>' +
+      '<i style="background:var(--map-coal)"></i>Beroperasi<br>' +
+      '<i style="background:var(--map-early)"></i>Pensiun dini (skenario)<br>' +
+      '<i style="background:var(--map-off)"></i>Pensiun sesuai baseline<br>' +
       "<b>PLTS atap per provinsi</b><br>" +
       PV_COLORS.map((c) => '<i class="sq" style="background:' + c + '"></i>').join("") +
       '<br><span id="legend-pv"></span>';
@@ -132,9 +133,9 @@ function updateMap(data, result, year) {
 
   for (const item of MapView.plantMarkers) {
     const s = plantStatus(item.group, result, year);
-    let color = "var(--coal)";
-    if (s.early > 0) color = "var(--early)";
-    else if (s.on === 0) color = "var(--coal-off)";
+    let color = "var(--map-coal)";
+    if (s.early > 0) color = "var(--map-early)";
+    else if (s.on === 0) color = "var(--map-off)";
     const shown = s.on > 0 ? s.on : item.group.mw;
     item.marker.setStyle({ fillColor: resolveColor(color), fillOpacity: s.on === 0 && s.early === 0 ? 0.6 : 0.95 });
     item.marker.setRadius(4 + Math.sqrt(shown) / 5);
@@ -162,7 +163,7 @@ function plantPopup(group, result, year, retireMap) {
     "<tr><td>Emisi</td><td>" + fmtNum(group.co2, 1) + " juta tCO2/tahun</td></tr>" +
     "<tr><td>Kematian dini</td><td>sekitar " + fmtNum(group.deaths, 0) + " per tahun</td></tr>" +
     "<tr><td>Status " + year + "</td><td>" + fmtNum(s.on, 0) + " MW beroperasi</td></tr>" +
-    "</table><button data-toggle-plant=\"" + group.name + "\">" +
+    "</table><button type=\"button\" data-toggle-plant=\"" + group.name + "\">" +
     (selected ? "Batalkan pensiun dini" : "Pensiunkan dini") + "</button></div>";
 }
 

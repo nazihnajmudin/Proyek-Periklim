@@ -2,26 +2,51 @@
 
 const Charts = {};
 
-// Palette Slots (dataviz reference palette, urutan tetap)
-const COLORS = {
-  revenue: "#2a78d6",
-  export: "#eb6834",
-  energy: "#1baf7a",
-  capacity: "#eda100",
-  retirement: "#e87ba4",
-  pln: "#4a3aa7",
-  compApbn: "#e34948",
-  program: "#008300",
-  net: "#0b0b0b",
-  scn: "#2a78d6",
-  base: "#4a3aa7",
-  threshold: "#52514e",
-  pv: "#1baf7a",
-  coal: "#4a3aa7",
-  single: "#2a78d6",
-};
-const SURFACE = "#ffffff";
-const SERIES = { pln: "#2a78d6", state: "#4a3aa7", health: "#1baf7a", low: "#2a78d6", high: "#eb6834" };
+// Palette Slots (token CSS: kobalt = kebijakan, kuning = surya, gelap = PLTU)
+function cssColor(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+const COLORS = {};
+const SERIES = {};
+let SURFACE = "";
+
+function loadPalette() {
+  const c = (name) => cssColor("--chart-" + name);
+  Object.assign(COLORS, {
+    revenue: c("sun"),
+    export: c("sun-2"),
+    energy: c("accent"),
+    capacity: c("accent-3"),
+    retirement: c("slate"),
+    pln: c("accent-2"),
+    compApbn: c("slate"),
+    program: c("sun"),
+    net: c("ink"),
+    scn: c("accent"),
+    base: c("slate"),
+    threshold: c("ink"),
+    pv: c("sun"),
+    coal: c("slate"),
+    single: c("accent"),
+  });
+  Object.assign(SERIES, { pln: c("accent"), state: c("accent-3"), health: c("sun"), low: c("accent"), high: c("sun") });
+  SURFACE = cssColor("--color-paper-3");
+
+  // Chart Defaults
+  Chart.defaults.font.family = cssColor("--font-body");
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = cssColor("--color-muted");
+  Chart.defaults.borderColor = c("grid");
+  Chart.defaults.plugins.legend.labels.color = cssColor("--color-ink");
+  Chart.defaults.plugins.tooltip.backgroundColor = cssColor("--color-pop");
+  Chart.defaults.plugins.tooltip.cornerRadius = 10;
+  Chart.defaults.plugins.tooltip.padding = 10;
+  Chart.defaults.elements.line.tension = 0;
+  Chart.defaults.elements.point.radius = 0;
+  Chart.defaults.elements.point.hoverRadius = 5;
+  Chart.defaults.plugins.tooltip.titleFont = { weight: "600" };
+}
 
 function toT(x) {
   return x / 1e12;
@@ -33,19 +58,20 @@ function baseOptions(yTitle) {
   return {
     responsive: true,
     maintainAspectRatio: false,
-    animation: { duration: 250 },
+    animation: matchMedia("(prefers-reduced-motion: reduce)").matches ? false : { duration: 250 },
     interaction: { mode: "index", intersect: false },
     plugins: {
-      legend: { position: "bottom", labels: { boxWidth: 12 } },
+      legend: { position: "bottom", labels: { usePointStyle: true, pointStyle: "circle", boxWidth: 8, boxHeight: 8, padding: 18 } },
     },
     scales: {
-      x: { stacked: true, grid: { display: false } },
-      y: { stacked: true, title: { display: true, text: yTitle } },
+      x: { stacked: true, grid: { display: false }, border: { display: false } },
+      y: { stacked: true, title: { display: true, text: yTitle }, border: { display: false } },
     },
   };
 }
 
 function initCharts() {
+  loadPalette();
   Charts.ledger = new Chart(document.getElementById("chart-ledger"), {
     type: "bar", data: { labels: [], datasets: [] }, options: baseOptions("Rp triliun per tahun"),
   });
@@ -123,6 +149,9 @@ function initCharts() {
     }],
   });
 
+  // redraw setelah font web siap
+  if (document.fonts) document.fonts.ready.then(() => Object.values(Charts).forEach((c) => c.update()));
+
   const jobsOptions = baseOptions("Orang / job-year per tahun");
   jobsOptions.scales.x.stacked = false;
   jobsOptions.scales.y.stacked = false;
@@ -137,7 +166,7 @@ function ledgerDatasets(rows, ledger, passThrough) {
   /* komponen neraca sesuai sudut pandang PLN, APBN, atau negara */
   const bar = (label, color, fn) => ({
     type: "bar", label: label, backgroundColor: color, borderColor: SURFACE, borderWidth: 2,
-    borderRadius: 2, stack: "s", data: rows.map((r) => toT(fn(r))),
+    borderRadius: 3, stack: "s", data: rows.map((r) => toT(fn(r))),
   });
   const plnParts = [
     bar("Pendapatan PLN hilang", COLORS.revenue, (r) => r.revenue_lost_rp),
@@ -164,7 +193,7 @@ function ledgerDatasets(rows, ledger, passThrough) {
   }
   parts.push({
     type: "line", label: "Neraca bersih", borderColor: COLORS.net, backgroundColor: COLORS.net,
-    borderWidth: 2, pointRadius: 3, stack: "net", data: rows.map((r) => toT(r[netKey])),
+    borderWidth: 2, pointRadius: 3, tension: 0, stack: "net", data: rows.map((r) => toT(r[netKey])),
   });
   return parts;
 }
@@ -182,9 +211,9 @@ function updateCharts(result, ledger, params, rmThreshold) {
     labels: labels,
     datasets: [
       { label: "Baseline", data: rows.map((r) => r.rm_base * 100), borderColor: COLORS.base, backgroundColor: COLORS.base,
-        borderWidth: 2, pointRadius: 3 },
+        borderWidth: 2 },
       { label: "Paket, sebelum pembangkit pengganti", data: rows.map((r) => r.rm_scn * 100), borderColor: COLORS.scn,
-        backgroundColor: COLORS.scn, borderWidth: 2, pointRadius: 3 },
+        backgroundColor: COLORS.scn, borderWidth: 2 },
       { label: "Batas rekomendasi " + rmThreshold * 100 + "%", data: rows.map(() => rmThreshold * 100),
         borderColor: COLORS.threshold, borderDash: [6, 4], borderWidth: 1, pointRadius: 0 },
     ],
@@ -194,7 +223,7 @@ function updateCharts(result, ledger, params, rmThreshold) {
   Charts.energy.data = {
     labels: labels,
     datasets: [
-      { label: "Tambahan energi PLTS atap vs baseline", data: rows.map((r) => r.pv_energy_gwh), backgroundColor: COLORS.pv, borderRadius: 2 },
+      { label: "Tambahan energi PLTS atap vs baseline", data: rows.map((r) => r.pv_energy_gwh), backgroundColor: COLORS.pv },
       { label: "Energi PLTU yang pensiun dini", data: rows.map((r) => r.retired_energy_gwh), backgroundColor: COLORS.coal },
     ],
   };
@@ -204,13 +233,13 @@ function updateCharts(result, ledger, params, rmThreshold) {
   Charts.impact.data = {
     labels: labels,
     datasets: [{ label: "CO2 dihindari", data: rows.map((r) => (co2 += r.co2_avoided_t / 1e6)),
-                 borderColor: COLORS.single, backgroundColor: COLORS.single, borderWidth: 2, pointRadius: 3 }],
+                 borderColor: COLORS.single, backgroundColor: COLORS.single, borderWidth: 2 }],
   };
   Charts.impact.update();
   Charts.deaths.data = {
     labels: labels,
     datasets: [{ label: "Kematian dini dihindari", data: rows.map((r) => (deaths += r.deaths_avoided)),
-                 borderColor: COLORS.single, backgroundColor: COLORS.single, borderWidth: 2, pointRadius: 3 }],
+                 borderColor: COLORS.single, backgroundColor: COLORS.single, borderWidth: 2 }],
   };
   Charts.deaths.update();
 
@@ -227,9 +256,9 @@ function updateCharts(result, ledger, params, rmThreshold) {
     labels: labels,
     datasets: [
       { label: "Tambahan PLTS atap vs baseline (GWp)", data: rows.map((r) => (r.pv_mwp - r.pv_mwp_base) / 1000),
-        borderColor: COLORS.pv, backgroundColor: COLORS.pv, borderWidth: 2, pointRadius: 3 },
+        borderColor: COLORS.pv, backgroundColor: COLORS.pv, borderWidth: 2 },
       { label: "PLTU pensiun lebih awal dari baseline (GW)", data: rows.map((r) => r.retired_mw / 1000),
-        borderColor: COLORS.export, backgroundColor: COLORS.export, borderWidth: 2, pointRadius: 3 },
+        borderColor: COLORS.coal, backgroundColor: COLORS.coal, borderWidth: 2 },
     ],
   };
   Charts.substitution.update();
@@ -245,7 +274,7 @@ function updateCompare(items) {
     labels: items.map((it) => it.label),
     datasets: series.map(([key, label, color]) => ({
       label: label, data: items.map((it) => toT(it.summary[key])), backgroundColor: color,
-      borderColor: SURFACE, borderWidth: 2, borderRadius: 2,
+      borderColor: SURFACE, borderWidth: 2, borderRadius: 4,
     })),
   };
   Charts.compare.update();
@@ -261,8 +290,8 @@ function updateTornado(rows, ledger) {
   Charts.tornado.data = {
     labels: sorted.map((r) => r.param),
     datasets: [
-      { label: "Parameter -20%", data: sorted.map((r) => [ref, toT(r["low_" + k])]), backgroundColor: SERIES.low, borderRadius: 2 },
-      { label: "Parameter +20%", data: sorted.map((r) => [ref, toT(r["high_" + k])]), backgroundColor: SERIES.high, borderRadius: 2 },
+      { label: "Parameter -20%", data: sorted.map((r) => [ref, toT(r["low_" + k])]), backgroundColor: SERIES.low },
+      { label: "Parameter +20%", data: sorted.map((r) => [ref, toT(r["high_" + k])]), backgroundColor: SERIES.high },
     ],
   };
   Charts.tornado.update();

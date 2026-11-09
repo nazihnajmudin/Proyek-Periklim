@@ -5,11 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Panduan PowerShift</title>
   <meta name="description" content="Cara memakai simulator PowerShift langkah demi langkah">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400;500&display=swap">
+  <meta name="theme-color" content="#f4f6f5">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <a class="skip" href="#main">Lewati ke konten</a>
   <header class="top">
-    <div class="brand"><span class="logo">PowerShift</span><span class="tagline">Panduan penggunaan</span></div>
+    <div class="brand"><span class="logo" translate="no">PowerShift</span><span class="tagline">Panduan penggunaan</span></div>
     <nav>
       <a href="index.html">Simulator</a>
       <a href="guide.html" class="active">Panduan</a>
@@ -19,7 +24,7 @@
     </nav>
   </header>
 
-  <main class="page guide">
+  <main id="main" class="page guide">
     <h1>Panduan Penggunaan</h1>
     <p>PowerShift menghitung dampak integrasi PLTS atap dan pensiun dini PLTU di sistem listrik Jawa-Bali, tahun 2026 sampai 2040, mengikuti roadmap laporan Kelompok 17.
        Semua angka uang dan dampak adalah <b>selisih terhadap baseline</b>: PLTU pensiun di akhir kontrak (phase down) dan PLTS atap tumbuh dengan aturan sekarang.
@@ -43,10 +48,10 @@
 
     <section id="tampilan">
       <h2>1. Bagian layar</h2>
-      <figure><img src="img/guide/01-tampilan.jpg" alt="Tampilan utama PowerShift dengan empat bagian bernomor" loading="lazy"></figure>
+      <figure><img width="2160" height="1350" src="img/guide/01-tampilan.jpg" alt="Tampilan utama PowerShift dengan empat bagian bernomor" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Panel kebijakan.</b> Tempat memilih skenario roadmap, PLTU yang dipensiunkan, sumber dana, dan kebijakan PLTS atap.</li>
-        <li><b>Kartu angka.</b> Ringkasan hasil kumulatif 2026-2040. Merah berarti lebih buruk dari baseline, hijau berarti lebih baik.</li>
+        <li><b>Kartu angka.</b> Ringkasan hasil kumulatif 2026-2040. Merah berarti lebih buruk dari baseline, hijau berarti lebih baik. Arahkan kursor ke kartu untuk melihat keterangannya.</li>
         <li><b>Peta Jawa-Bali.</b> Titik PLTU dan warna provinsi menurut kapasitas PLTS atap.</li>
         <li><b>Tab hasil.</b> Indikator roadmap, grafik neraca, keandalan, dampak, dan penilaian kriteria.</li>
       </ol>
@@ -54,7 +59,7 @@
 
     <section id="preset">
       <h2>2. Mulai dari skenario roadmap</h2>
-      <figure class="narrow"><img src="img/guide/02-preset.jpg" alt="Menu pilihan skenario roadmap" loading="lazy"></figure>
+      <figure class="narrow"><img width="829" height="313" src="img/guide/02-preset.jpg" alt="Menu pilihan skenario roadmap" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Pilih skenario</b> dari menu. Ada empat skenario: Phase down PPA (pembanding), Roadmap Fase 1-2 percontohan, Roadmap lengkap Fase 1-3, dan Roadmap varian fiskal seimbang.</li>
         <li><b>Baca keterangan skenario</b> di bawah menu untuk melihat isi kebijakannya.</li>
@@ -64,7 +69,7 @@
 
     <section id="pltu">
       <h2>3. Memilih PLTU untuk pensiun dini</h2>
-      <figure><img src="img/guide/03-pilih-pltu.jpg" alt="Popup PLTU di peta dan menu tambah PLTU" loading="lazy"></figure>
+      <figure><img width="1431" height="834" src="img/guide/03-pilih-pltu.jpg" alt="Popup PLTU di peta dan menu tambah PLTU" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Klik titik PLTU di peta</b>, lalu klik <b>Pensiunkan dini</b> pada popup. Popup juga menampilkan pemilik, kapasitas, emisi, dan perkiraan kematian dini.</li>
         <li>Atau pilih dari menu <b>+ Tambah PLTU</b> di panel kiri.</li>
@@ -74,7 +79,7 @@
 
     <section id="tahun">
       <h2>4. Tahun pensiun, kompensasi, dan sumber dana</h2>
-      <figure class="narrow"><img src="img/guide/04-tahun-dana.jpg" alt="Slider tahun pensiun, pilihan kompensasi, dan slider dana" loading="lazy"></figure>
+      <figure class="narrow"><img width="528" height="900" src="img/guide/04-tahun-dana.jpg" alt="Slider tahun pensiun, pilihan kompensasi, dan slider dana" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Geser tahun pensiun</b> tiap PLTU. Batas kanan adalah tahun pensiun baseline. Klik <b>x</b> untuk membatalkan.</li>
         <li><b>Pilih asumsi kompensasi.</b> Estimasi ETM (bawaan) dikalibrasi ke refinancing Cirebon-1 oleh ADB, US$250-300 juta. Valuasi ETP memakai valuasi per PLTU yang dirangkum laporan kelompok, sebagai pembanding. Klaim PLN memakai angka Rp60 triliun untuk percepatan lima tahun.</li>
@@ -85,7 +90,7 @@
 
     <section id="plts">
       <h2>5. Kebijakan PLTS atap</h2>
-      <figure class="narrow"><img src="img/guide/05-plts-atap.jpg" alt="Slider kebijakan PLTS atap" loading="lazy"></figure>
+      <figure class="narrow"><img width="528" height="780" src="img/guide/05-plts-atap.jpg" alt="Slider kebijakan PLTS atap" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Gedung pemerintah dan BUMN.</b> Kewajiban PLTS atap per tahun (Fase 2 roadmap, 200 MW/tahun). Belanjanya dari APBN, tagihan yang dihemat kembali ke APBN.</li>
         <li><b>Insentif fiskal industri.</b> Potongan harga pemasangan PLTS atap industri yang ditanggung APBN. Balik modal lebih cepat sehingga PLTS atap industri bertambah.</li>
@@ -98,9 +103,9 @@
 
     <section id="peta">
       <h2>6. Peta dan perjalanan waktu</h2>
-      <figure><img src="img/guide/06-peta.jpg" alt="Kontrol tahun, lapisan peta, dan legenda" loading="lazy"></figure>
+      <figure><img width="2160" height="1350" src="img/guide/06-peta.jpg" alt="Kontrol tahun, lapisan peta, dan legenda" loading="lazy"></figure>
       <ol class="steps">
-        <li><b>Geser slider tahun</b> atau klik tombol putar untuk melihat perubahan 2026 sampai 2040. PLTU yang pensiun dini berubah jingga, warna provinsi makin gelap saat PLTS atap bertambah.</li>
+        <li><b>Geser slider tahun</b> atau klik tombol putar untuk melihat perubahan 2026 sampai 2040. PLTU yang pensiun dini berubah hijau, warna provinsi makin gelap saat PLTS atap bertambah.</li>
         <li><b>Nyalakan lapisan</b> Potensi surya (produksi kWh per kWp per kabupaten) atau Dampak kesehatan (lingkar kematian dini per PLTU).</li>
         <li><b>Legenda</b> menjelaskan warna titik PLTU dan skala PLTS atap.</li>
       </ol>
@@ -108,12 +113,12 @@
 
     <section id="indikator">
       <h2>7. Indikator roadmap</h2>
-      <figure><img src="img/guide/07-indikator.jpg" alt="Tabel indikator roadmap dan ringkasan per fase" loading="lazy"></figure>
+      <figure><img width="1608" height="920" src="img/guide/07-indikator.jpg" alt="Tabel indikator roadmap dan ringkasan per fase" loading="lazy"></figure>
       <ol class="steps">
-        <li><b>Capaian indikator.</b> Skenario dinilai terhadap indikator keberhasilan laporan kelompok: PLTS atap setara daya PLTU yang dipensiunkan, target PLTS atap 2028, target pensiun dini JETP, pembangkit pengganti, keseimbangan fiskal, dana luar, pekerja terdampak, dan kesehatan.</li>
+        <li><b>Capaian indikator.</b> Skenario dinilai terhadap indikator keberhasilan laporan kelompok: PLTS atap setara daya PLTU yang dipensiunkan, target PLTS atap 2028, target pensiun dini JETP, pembangkit pengganti, keseimbangan fiskal, dana luar, pekerja terdampak, dan kesehatan. Arahkan kursor ke baris untuk melihat angka capaiannya.</li>
         <li><b>Ringkasan per fase.</b> Kapasitas PLTS atap, PLTU pensiun dini, neraca negara, dana luar, kematian dini, dan CO2 dihindari pada tiap fase roadmap (2026-2027, 2028-2030, 2031-2035, 2036-2040).</li>
       </ol>
-      <figure><img src="img/guide/07-kesetaraan.jpg" alt="Grafik tambahan PLTS atap dan PLTU pensiun dini per tahun" loading="lazy"></figure>
+      <figure><img width="1518" height="570" src="img/guide/07-kesetaraan.jpg" alt="Grafik tambahan PLTS atap dan PLTU pensiun dini per tahun" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Grafik kesetaraan.</b> Tambahan PLTS atap dibanding PLTU yang sudah pensiun dini per tahun, dalam GW. Di bawah grafik ada tombol unduh PNG.</li>
       </ol>
@@ -122,7 +127,7 @@
 
     <section id="kandidat">
       <h2>8. Menyaring kandidat PLTU</h2>
-      <figure><img src="img/guide/08-kandidat.jpg" alt="Tab kandidat PLTU dengan pilihan tahun dan tombol tambah" loading="lazy"></figure>
+      <figure><img width="1608" height="449" src="img/guide/08-kandidat.jpg" alt="Tab kandidat PLTU dengan pilihan tahun dan tombol tambah" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Pilih tahun pensiun</b> yang ingin diuji.</li>
         <li><b>Baca daftar urut.</b> Setiap PLTU dihitung seolah dipensiunkan sendiri pada tahun itu, memakai asumsi kompensasi dan pendanaan di panel kiri. Urutan dari neraca negara per GW terbaik.</li>
@@ -133,7 +138,7 @@
 
     <section id="hasil">
       <h2>9. Membaca neraca dan grafik</h2>
-      <figure><img src="img/guide/09-neraca.jpg" alt="Tab hasil, pilihan sudut pandang neraca, dan tombol unduh" loading="lazy"></figure>
+      <figure><img width="2160" height="1350" src="img/guide/09-neraca.jpg" alt="Tab hasil, pilihan sudut pandang neraca, dan tombol unduh" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Pilih tab</b>: Indikator roadmap, Kandidat PLTU, Neraca (uang), Keandalan (reserve margin dan energi), Dampak (CO2, kematian dini, pekerja), Kriteria.</li>
         <li><b>Pilih sudut pandang neraca</b>: PLN, APBN, atau Negara (PLN + APBN). Batang di atas nol menguntungkan, di bawah nol merugikan. Garis hitam adalah neraca bersih per tahun.</li>
@@ -143,7 +148,7 @@
 
     <section id="kriteria">
       <h2>10. Kriteria Permen ESDM 10/2025</h2>
-      <figure><img src="img/guide/10-kriteria.jpg" alt="Tabel kriteria per PLTU dan per paket" loading="lazy"></figure>
+      <figure><img width="1716" height="1044" src="img/guide/10-kriteria.jpg" alt="Tabel kriteria per PLTU dan per paket" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Kriteria per PLTU</b> (kapasitas, usia, utilisasi, emisi) untuk setiap PLTU yang dipilih.</li>
         <li><b>Kriteria tingkat paket</b> (nilai tambah ekonomi, pendanaan, teknologi, keandalan, dampak tarif, transisi berkeadilan).</li>
@@ -153,7 +158,7 @@
 
     <section id="analisis">
       <h2>11. Analisis skenario</h2>
-      <figure><img src="img/guide/11-analisis.jpg" alt="Tab analisis dengan grafik perbandingan dan sensitivitas" loading="lazy"></figure>
+      <figure><img width="1608" height="1162" src="img/guide/11-analisis.jpg" alt="Tab analisis dengan grafik perbandingan dan sensitivitas" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Perbandingan skenario.</b> Skenario aktif dipecah menjadi komponen PLTS atap saja dan pensiun dini saja, lalu dibandingkan dengan skenario roadmap lain.</li>
         <li><b>Pilih neraca</b> untuk grafik sensitivitas: PLN atau negara.</li>
@@ -164,7 +169,7 @@
 
     <section id="bagikan">
       <h2>12. Menyimpan dan berbagi skenario</h2>
-      <figure class="narrow"><img src="img/guide/12-bagikan.jpg" alt="Tombol bagikan dan reset" loading="lazy"></figure>
+      <figure class="narrow"><img width="528" height="180" src="img/guide/12-bagikan.jpg" alt="Tombol bagikan dan reset" loading="lazy"></figure>
       <ol class="steps">
         <li><b>Bagikan</b> menyalin tautan berisi seluruh pengaturan. Orang yang membuka tautan melihat skenario yang sama.</li>
         <li><b>Reset ke baseline</b> mengembalikan semua pengaturan.</li>
